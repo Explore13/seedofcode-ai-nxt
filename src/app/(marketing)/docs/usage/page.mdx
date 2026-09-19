@@ -1,0 +1,38 @@
+export const metadata = {
+  title: 'Usage & Limits',
+  description: 'How pay-per-token pricing works on SeedofCode AI.',
+};
+
+# Usage & Limits
+
+SeedofCode AI operates on a strict **pay-per-token** model. There are no monthly subscriptions, no seat licenses, and no hidden fees. You only pay for exactly what you compute.
+
+## How Credits Work
+
+Your account holds a balance of **Credits**. 
+When you make a request, we calculate the cost based on the specific model you selected. Different models have different costs per token, reflecting the hardware required to run them (e.g., an 8B parameter model is cheaper to run than a 70B parameter model).
+
+### The Reservation System
+
+To ensure you don't overdraw your balance, we use a reservation system on every request:
+
+1. **Estimate**: When your request hits the API, we estimate the prompt tokens and look at your requested `max_tokens` (or `num_predict`). If you don't specify a max, we assume a default (typically 1024).
+2. **Reserve**: We calculate the maximum possible cost for this request and place a temporary hold (reservation) on that amount of credits in your wallet. If your balance is too low, the request is rejected with a `402 Payment Required` error.
+3. **Generate**: The model processes your request.
+4. **Settle**: Once generation is complete, we calculate the *actual* number of tokens used. We charge you for the exact amount, and immediately refund the unspent portion of your reservation back to your wallet.
+
+> [!NOTE]
+> If a request fails due to a server error (5xx), the entire reservation is refunded. You are only charged for successful inferences.
+
+## Viewing Your Usage
+
+You can view your usage and credit balance at any time in the Developer Console.
+
+- **Dashboard**: Shows your live wallet balance and today's total request count.
+- **Usage Analytics**: Provides detailed charts of your token consumption over time, split by model.
+
+## Rate Limits
+
+To protect the platform from abuse, all accounts are subject to rate limits. If you exceed these limits, you will receive a `429 Too Many Requests` response. 
+
+If your application requires higher throughput, please contact support to discuss a limit increase.

@@ -1,0 +1,337 @@
+@import 'tailwindcss';
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * ─────────────────────────────────────────────────────────────────────────────
+ * SeedOfCode User Portal — Design tokens ("Greenhouse for code")
+ *
+ * Identity: a cultivation lab. Evergreen + living chlorophyll + warm harvest
+ * light on pine-dark / sage-paper. Deliberately NOT neon-hacker green-on-black
+ * and NOT the generic violet AI-SaaS look.
+ *
+ * Architecture:
+ *   1. Raw brand palette             — fixed hex, theme-independent.
+ *   2. Semantic tokens               — role-based (background/foreground/...),
+ *                                      redefined per theme via [data-theme].
+ *   3. @theme inline                 — exposes the semantic tokens as Tailwind
+ *                                      utilities (bg-background, text-foreground,
+ *                                      border-border, bg-primary, ...) that stay
+ *                                      live against the current theme.
+ *
+ * Light is the `:root` default; `[data-theme='dark']` overrides. The app boots
+ * in dark (set by the no-flash script in layout.tsx); both themes are
+ * first-class and tuned for WCAG AA — dark is not a naive inversion of light.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+/* Make `dark:` utilities respond to our attribute strategy, not the media query. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+  /* 1 ── Raw brand palette ────────────────────────────────────────────────── */
+  --pine: #0f1c16; /* dark canvas — a true green-black, real hue */
+  --pine-deep: #0a140f; /* deepest — nav / gradient anchor */
+  --moss: #17281f; /* elevated surface (dark) */
+  --moss-light: #1e3327; /* hover / raised surface (dark) */
+  --paper: #ecf1e9; /* light canvas — cool sage-white, not cream */
+  --paper-bright: #f6f9f3; /* subtle raised surface (light) */
+  --evergreen: #123024; /* deepest brand ink */
+  --evergreen-deep: #0c2119;
+  --chlorophyll: #2f8f5b; /* primary accent — natural leaf green, not acid */
+  --chlorophyll-bright: #3fa96c; /* lighter — reads better on pine */
+  --chlorophyll-deep: #216e45; /* AA-safe green for text/buttons on light */
+  --harvest: #c68a2e; /* warm secondary — energy / warnings (earthy amber) */
+  --harvest-bright: #dba144;
+  --line-dark: #24382c;
+  --line-light: #d3decd;
+  --muted-dark: #8aa394;
+  --muted-light: #5b6e60;
+  --danger: #c0432f; /* brick red tuned to the palette, not default #EF4444 */
+  --danger-bright: #d65a45;
+  --info: #3e7c8c; /* muted teal */
+
+  /* 2 ── Semantic tokens — LIGHT (default) ────────────────────────────────── */
+  --surface: #ffffff;
+  --surface-2: var(--paper-bright);
+  --border: oklch(0.922 0 0);
+  --border-strong: #bccdb4;
+  --muted-foreground: oklch(0.556 0 0);
+  --subtle-foreground: #7c8c77;
+
+  --primary: oklch(0.205 0 0); /* white text passes AA on this */
+  --primary-hover: #1b5a38;
+  --primary-foreground: oklch(0.985 0 0);
+
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+
+  --success: var(--chlorophyll-deep);
+  --success-foreground: #ffffff;
+  --warning: #9a6a1f; /* darkened harvest for AA text on light */
+  --warning-foreground: #ffffff;
+  --danger-color: var(--danger);
+  --danger-foreground: #ffffff;
+  --info-color: #2c6072;
+  --info-foreground: #ffffff;
+
+  --ring: oklch(0.708 0 0);
+  --overlay: rgba(12, 33, 25, 0.35);
+
+  /* Chart series (brand-consistent; consumed later by Recharts). */
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --chart-6: #8f5b2a;
+
+  color-scheme: light;
+
+  --background: oklch(1 0 0);
+
+  --foreground: oklch(0.145 0 0);
+
+  --card: oklch(1 0 0);
+
+  --card-foreground: oklch(0.145 0 0);
+
+  --popover: oklch(1 0 0);
+
+  --popover-foreground: oklch(0.145 0 0);
+
+  --secondary: oklch(0.97 0 0);
+
+  --secondary-foreground: oklch(0.205 0 0);
+
+  --muted: oklch(0.97 0 0);
+
+  --destructive: oklch(0.577 0.245 27.325);
+
+  --input: oklch(0.922 0 0);
+
+  --radius: 0.625rem;
+
+  --sidebar: oklch(0.985 0 0);
+
+  --sidebar-foreground: oklch(0.145 0 0);
+
+  --sidebar-primary: oklch(0.205 0 0);
+
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+
+  --sidebar-accent: oklch(0.97 0 0);
+
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+
+  --sidebar-border: oklch(0.922 0 0);
+
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+[data-theme='dark'] {
+  --background: var(--pine);
+  --surface: var(--moss);
+  --surface-2: var(--moss-light);
+  --border: var(--line-dark);
+  --border-strong: #2e4a39;
+  --foreground: var(--paper);
+  --muted-foreground: var(--muted-dark);
+  --subtle-foreground: #6b8478;
+
+  --primary: var(--chlorophyll);
+  --primary-hover: var(--chlorophyll-bright);
+  --primary-foreground: #08160f; /* deep-green label on mint — high contrast */
+
+  --accent: var(--chlorophyll-bright);
+  --accent-foreground: #08160f;
+
+  --success: var(--chlorophyll-bright);
+  --success-foreground: #08160f;
+  --warning: var(--harvest-bright);
+  --warning-foreground: #1a1204;
+  --danger-color: var(--danger-bright);
+  --danger-foreground: #1a0806;
+  --info-color: #6bb2c4;
+  --info-foreground: #04171d;
+
+  --ring: var(--chlorophyll-bright);
+  --overlay: rgba(0, 0, 0, 0.55);
+
+  --chart-1: var(--chlorophyll-bright);
+  --chart-2: #9fd9b6;
+  --chart-3: var(--harvest-bright);
+  --chart-4: #6bb2c4;
+  --chart-5: #a7d38a;
+  --chart-6: #d4a06a;
+
+  color-scheme: dark;
+}
+
+/* 3 ── Expose tokens to Tailwind utilities ──────────────────────────────────
+ * `inline` keeps the utility values referencing the CSS vars, so a change of
+ * [data-theme] instantly re-colours every utility without a rebuild. */
+@theme inline {
+  /* Brand (raw) — for deliberate direct use. */
+  --color-pine: var(--pine);
+  --color-moss: var(--moss);
+  --color-paper: var(--paper);
+  --color-evergreen: var(--evergreen);
+  --color-chlorophyll: var(--chlorophyll);
+  --color-harvest: var(--harvest);
+
+  /* Semantic (role-based). */
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-danger: var(--danger-color);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-info: var(--info-color);
+  --color-info-foreground: var(--info-foreground);
+
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+
+  /* Type families (CSS vars are injected by next/font in layout.tsx). */
+  --font-sans: var(--font-sans);
+  --font-mono:
+    var(--font-geist-mono), ui-monospace, 'SFMono-Regular', monospace;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  /* Radius scale — hierarchical, not one-size-fits-all. */
+  --radius-chip: 6px;
+  --radius-control: 10px;
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+
+  /* Display type sizes (paired line-heights) for hero / section openers. */
+  --text-display: 3.75rem;
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.02em;
+  --text-display-sm: 2.5rem;
+  --text-display-sm--line-height: 1.08;
+  --text-display-sm--letter-spacing: -0.015em;
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-input: var(--input);
+  --color-destructive: var(--destructive);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* 4 ── Base layer ───────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    border-color: var(--color-border);
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @apply font-sans;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    /* Smooth, brief theme cross-fade — disabled under reduced motion below. */
+    transition:
+      background-color 200ms ease,
+      color 200ms ease;
+    @apply bg-background text-foreground;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-accent) 28%, transparent);
+    color: var(--color-foreground);
+  }
+
+  /* Consistent, visible keyboard focus everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Themed, unobtrusive scrollbars. */
+  * {
+    scrollbar-color: var(--color-border-strong) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--color-border-strong);
+    border-radius: var(--radius-pill);
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-muted-foreground);
+    background-clip: content-box;
+  }
+}
+
+/* 5 ── Respect reduced-motion globally ──────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* 6 ── Marketing animations ─────────────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}

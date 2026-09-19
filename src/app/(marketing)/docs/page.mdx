@@ -1,0 +1,96 @@
+export const metadata = {
+  title: 'Quickstart',
+  description: 'Get started with the SeedofCode AI inference API in minutes.',
+};
+
+# Quickstart
+
+Welcome to SeedofCode AI. Our API is highly compatible with the official OpenAI SDKs, allowing you to use your existing code and tooling by simply changing your `baseURL` and injecting a SeedofCode AI API key.
+
+## 1. Get an API Key
+
+Before you can make a request, you need an API key. 
+
+1. Sign up for a free account.
+2. Navigate to the **API Keys** section in your dashboard.
+3. Click **Generate Key**. Your new key will start with `soc_live_`.
+
+> [!WARNING]
+> Keep your API key secure. Do not commit it to version control. Keys are only shown once upon creation.
+
+## 2. Set your Base URL
+
+Configure your client to point to our API instead of OpenAI's default endpoints. 
+
+The SeedofCode AI base URL is:
+```text
+https://api.ai.seedofcode.dev/v1
+```
+
+## 3. Make a Request
+
+Use the standard `chat/completions` endpoint. Here is how you do it using the official OpenAI Node.js SDK:
+
+```javascript
+import OpenAI from "openai";
+
+// 1. Initialize the client with the SeedofCode AI base URL and your key
+const openai = new OpenAI({
+  baseURL: "https://api.ai.seedofcode.dev/v1",
+  apiKey: process.env.SOC_API_KEY, // e.g. soc_live_xK9mNpQr2vWz...
+});
+
+async function main() {
+  // 2. Call the chat completions endpoint just like normal
+  const completion = await openai.chat.completions.create({
+    model: "llama3.1:8b", // Specify an available model
+    messages: [
+      { role: "system", content: "You are a helpful coding assistant." },
+      { role: "user", content: "Write a function to calculate the Fibonacci sequence in Python." },
+    ],
+  });
+
+  console.log(completion.choices[0].message.content);
+}
+
+main();
+```
+
+### Using cURL
+
+If you prefer `curl`, it looks exactly like a standard OpenAI request:
+
+```bash
+curl https://api.ai.seedofcode.dev/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $SOC_API_KEY" \
+  -d '{
+    "model": "qwen2.5:7b",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Explain quantum computing in one sentence."
+      }
+    ]
+  }'
+```
+
+## Available Models
+
+SeedofCode AI runs a dedicated fleet of Ollama nodes. For a full list of currently active models, you can query the `/models` endpoint:
+
+```bash
+curl https://api.ai.seedofcode.dev/api/models \
+  -H "Authorization: Bearer $SOC_API_KEY"
+```
+
+Commonly available models include:
+- `llama3.1:8b` and `llama3.1:70b`
+- `qwen2.5:7b` and `qwen2.5:32b`
+- `mistral:7b`
+
+## Next Steps
+
+- Understand how [Authentication](/docs/auth) works.
+- Learn about [Usage & Limits](/docs/usage) and how your credits are calculated.
+- See more examples in [SDK Compatibility](/docs/sdk-compat).

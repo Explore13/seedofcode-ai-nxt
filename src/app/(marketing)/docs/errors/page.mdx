@@ -1,0 +1,41 @@
+export const metadata = {
+  title: 'Error Codes',
+  description: 'Understanding SeedofCode AI API error responses.',
+};
+
+# Error Codes
+
+SeedofCode AI uses standard HTTP status codes to indicate the success or failure of an API request. In general:
+
+- **2xx** indicates success.
+- **4xx** indicates an error that failed given the information provided (e.g., missing API key, insufficient credits).
+- **5xx** indicates an error on our servers.
+
+When an error occurs, the response body will contain a JSON object with an error message detailing what went wrong.
+
+```json
+{
+  "error": "Insufficient credits or wallet not found",
+  "statusCode": 402,
+  "message": "Payment Required"
+}
+```
+
+## Common Status Codes
+
+### 400 Bad Request
+The request was improperly formatted, missing required parameters, or requested a model that does not exist or is currently disabled.
+*Example: You requested `model: "gpt-4"` which we do not host.*
+
+### 401 Unauthorized
+The API key is missing, invalid, or has been revoked. Ensure you are sending the key in the `Authorization: Bearer <key>` header and that the key starts with `soc_live_`.
+
+### 402 Payment Required
+Your wallet has insufficient credits to complete the requested inference. 
+Because SeedofCode AI is a pay-per-token platform, we calculate the maximum possible cost of your request (Prompt Tokens + `max_tokens` limit) before generating. If your balance is lower than this maximum estimated cost, the request is rejected with a `402`. Top up your credits in the dashboard to continue.
+
+### 429 Too Many Requests
+You have exceeded your rate limit. Wait a moment before retrying your request. If you need higher throughput, please contact support to have your limits raised.
+
+### 502 Bad Gateway
+The underlying inference node (Ollama) failed to generate a response, or the worker queue timed out. This is typically a transient error. You are not charged for requests that result in a 5xx error. You may safely retry the request.

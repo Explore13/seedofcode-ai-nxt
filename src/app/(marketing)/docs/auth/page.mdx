@@ -1,0 +1,71 @@
+export const metadata = {
+  title: 'Authentication',
+  description: 'How to authenticate your requests to SeedofCode AI.',
+};
+
+# Authentication
+
+SeedofCode AI uses API keys for authentication. You must include your API key in the `Authorization` HTTP header of every request you make to the inference endpoints.
+
+## API Key Format
+
+All production SeedofCode AI API keys begin with the prefix `soc_live_`.
+
+```text
+soc_live_xK9mNpQr2vWzA1b2c3d4e5f6g7h8i9j0
+```
+
+> [!TIP]
+> The `soc_live_` prefix helps you easily identify SeedofCode AI keys in your codebase and prevents them from being confused with keys from other providers. It also enables secret-scanning tools (like GitHub Advanced Security) to automatically detect leaked keys.
+
+## Making Authenticated Requests
+
+You can authenticate your requests by passing the key in one of two ways:
+
+1. As a **Bearer token** in the `Authorization` header.
+2. In the `x-api-key` header.
+
+### Example: Raw HTTP (Authorization Header)
+
+```http
+POST /v1/chat/completions HTTP/1.1
+Host: api.ai.seedofcode.dev
+Authorization: Bearer soc_live_your_api_key_here
+Content-Type: application/json
+```
+
+### Example: Raw HTTP (x-api-key Header)
+
+```http
+POST /v1/chat/completions HTTP/1.1
+Host: api.ai.seedofcode.dev
+x-api-key: soc_live_your_api_key_here
+Content-Type: application/json
+```
+
+### Example: OpenAI SDK
+
+The OpenAI SDK automatically formats the header for you when you pass the `apiKey` configuration option:
+
+```javascript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  baseURL: "https://api.ai.seedofcode.dev/v1",
+  apiKey: "soc_live_your_api_key_here", // Typically loaded from process.env
+});
+```
+
+## Managing Your Keys
+
+You can manage your API keys in the Developer Console under **API Keys**. 
+
+- **Create**: Generate a new key at any time.
+- **Revoke/Delete**: If a key is compromised, you can delete it immediately. It will be instantly rejected by the API Gateway.
+- **Visibility**: For security, you can only view a key in plaintext once, immediately after creating it. If you lose it, you must generate a new one.
+
+## Security Best Practices
+
+- **Never expose your keys in frontend code.** If you need to make API calls from a browser or mobile app, route them through your own backend server that securely holds the `soc_live_` key.
+- **Use environment variables.** Store your keys in `.env` files and never commit them to git.
+- **Rotate keys periodically.** Create a new key, update your servers to use it, and then delete the old key.
