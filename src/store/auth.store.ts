@@ -14,7 +14,7 @@ import type { AuthTokens, User } from '@/lib/types';
  *    NEVER trusted for authorization — the API is the only real gate.
  */
 
-const ACCESS_STORAGE_KEY = 'soc-access';
+const ACCESS_STORAGE_KEY = 'soc_access';
 const AUTHED_COOKIE = 'soc_authed';
 
 export type AuthStatus =

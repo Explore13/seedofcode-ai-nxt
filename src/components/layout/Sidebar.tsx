@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   Leaf,
   Sparkles,
+  BookOpen,
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
@@ -21,6 +22,7 @@ const navItems = [
   { href: '/api-keys', label: 'API Keys', icon: Key },
   { href: '/usage', label: 'Usage', icon: BarChart3 },
   { href: '/playground', label: 'Playground', icon: Sparkles },
+  { href: '/docs', label: 'Docs', icon: BookOpen },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 

@@ -153,7 +153,7 @@ export function CreateKeyModal({
             </div>
           </fieldset>
 
-          <DialogFooter className="-mx-4 -mb-4">
+          <DialogFooter>
             <Button
               type="button"
               variant="outline"

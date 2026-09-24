@@ -2,18 +2,21 @@
 
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth.store';
+import { useWallet } from '@/hooks/useWallet';
 import { authApi } from '@/lib/api';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { MobileSidebar } from './Sidebar';
+import { cn } from '@/lib/cn';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings, Coins } from 'lucide-react';
 import Link from 'next/link';
 
 interface HeaderProps {
@@ -23,6 +26,7 @@ interface HeaderProps {
 
 export function Header({ sidebarCollapsed }: HeaderProps) {
   const { user, clear } = useAuthStore();
+  const { data: wallet, isLoading: isWalletLoading } = useWallet();
   const router = useRouter();
 
   async function handleLogout() {
@@ -40,16 +44,22 @@ export function Header({ sidebarCollapsed }: HeaderProps) {
 
   return (
     <header
-      className="fixed top-0 right-0 z-20 flex h-14 items-center justify-between border-b border-border bg-surface px-4 transition-all duration-300"
-      style={{
-        left: sidebarCollapsed ? '4rem' : '15rem',
-      }}
+      className={cn(
+        'fixed top-0 right-0 z-20 flex h-14 items-center justify-between border-b border-border bg-surface px-4 transition-all duration-300 left-0',
+        sidebarCollapsed ? 'md:left-16' : 'md:left-[15rem]'
+      )}
     >
       {/* Mobile hamburger */}
       <MobileSidebar />
 
       {/* Right-side controls */}
       <div className="ml-auto flex items-center gap-2">
+        {user && (
+          <div className="mr-2 flex h-8 items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-sm font-medium text-foreground shadow-sm">
+            <Coins className="h-4 w-4 text-chlorophyll" />
+            {isWalletLoading ? '...' : wallet?.balance.toLocaleString() ?? 0}
+          </div>
+        )}
         <ThemeToggle />
 
         {/* User menu — base-ui Menu, no asChild needed */}
@@ -61,16 +71,18 @@ export function Header({ sidebarCollapsed }: HeaderProps) {
             {initial}
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col gap-0.5">
-                <p className="text-sm font-medium">{displayName}</p>
-                {user?.email && (
-                  <p className="truncate text-xs text-muted-foreground">
-                    {user.email}
-                  </p>
-                )}
-              </div>
-            </DropdownMenuLabel>
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col gap-0.5">
+                  <p className="text-sm font-medium">{displayName}</p>
+                  {user?.email && (
+                    <p className="truncate text-xs text-muted-foreground">
+                      {user.email}
+                    </p>
+                  )}
+                </div>
+              </DropdownMenuLabel>
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             {/* Base UI MenuItem does not support asChild; wrap Link inside */}
             <DropdownMenuItem className="cursor-pointer p-0">

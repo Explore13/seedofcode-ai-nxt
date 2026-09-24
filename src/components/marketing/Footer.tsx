@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { Leaf } from 'lucide-react';
-import { env } from '@/lib/env';
 
 const FOOTER_COLS = [
   {
     heading: 'Product',
     links: [
       { label: 'Dashboard', href: '/home' },
+      { label: 'Playground', href: '/playground' },
       { label: 'API Keys', href: '/api-keys' },
       { label: 'Usage Analytics', href: '/usage' },
     ],
@@ -14,9 +14,10 @@ const FOOTER_COLS = [
   {
     heading: 'Docs',
     links: [
-      { label: 'Quickstart', href: '/docs/quickstart' },
-      { label: 'Authentication', href: '/docs/auth' },
+      { label: 'Quickstart', href: '/docs' },
+      { label: 'API Keys & Auth', href: '/docs/api-keys' },
       { label: 'SDK Compatibility', href: '/docs/sdk-compat' },
+      { label: 'Data Privacy', href: '/docs/data-privacy' },
       { label: 'Error Codes', href: '/docs/errors' },
     ],
   },
@@ -25,7 +26,7 @@ const FOOTER_COLS = [
     links: [
       {
         label: 'Contact',
-        href: `mailto:${env.contactEmail}`,
+        href: 'mailto:suryaxdeveloper@gmail.com',
         external: true,
       },
     ],

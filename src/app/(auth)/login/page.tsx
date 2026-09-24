@@ -5,8 +5,14 @@ import { LoginForm } from '@/components/auth/LoginForm';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Sign in',
-  robots: { index: false },
+  title: 'Sign in to SeedofCode AI',
+  description: 'Sign in to your SeedofCode AI account to manage your API keys, view usage analytics, and test models in the playground.',
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Sign in to SeedofCode AI',
+    description: 'Sign in to your SeedofCode AI account to manage your API keys, view usage analytics, and test models in the playground.',
+    type: 'website',
+  },
 };
 
 export default function LoginPage() {

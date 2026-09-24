@@ -10,8 +10,6 @@ import { useUsage } from '@/hooks/useUsage';
 import { useUsageFilters } from '@/hooks/useUsageFilters';
 import {
   bucketByDay,
-  distinctModels,
-  filterByModel,
   filterByRange,
 } from '@/lib/usage/aggregate';
 import { UsageFilters } from './UsageFilters';
@@ -19,6 +17,8 @@ import { UsageSummaryCards } from './UsageSummaryCards';
 import { RequestHistoryTable } from './RequestHistoryTable';
 import { CreditPointsTimeline } from './CreditPointsTimeline';
 import { AlertCircle, LineChart } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { modelsApi } from '@/lib/api';
 
 const UsageCharts = dynamic(() => import('./UsageCharts'), {
   ssr: false,
@@ -36,25 +36,33 @@ const UsageCharts = dynamic(() => import('./UsageCharts'), {
 export function UsageClient() {
   const filters = useUsageFilters();
   const { from, to, models } = filters;
-  const { data, isLoading, isError, refetch } = useUsage(from, to);
+  const { data, isLoading, isError, refetch } = useUsage(from, to, models);
+
+  const { data: systemModels } = useQuery({
+    queryKey: ['models'],
+    queryFn: () => modelsApi.list(),
+  });
 
   const all = useMemo(() => data ?? [], [data]);
-  const availableModels = useMemo(() => distinctModels(all), [all]);
+  const availableModels = useMemo(
+    () => systemModels?.map((m) => m.name).sort() ?? [],
+    [systemModels]
+  );
 
   const { currentRows, previousRows, daily } = useMemo(() => {
-    const byModel = filterByModel(all, models);
-    const current = filterByRange(byModel, from, to);
+    // The backend already filtered by model, so `all` only contains the requested models.
+    const current = filterByRange(all, from, to);
     const prevTo = new Date(from.getTime() - 1);
     const prevFrom = new Date(
       from.getTime() - Math.max(to.getTime() - from.getTime(), 0),
     );
-    const previous = filterByRange(byModel, prevFrom, prevTo);
+    const previous = filterByRange(all, prevFrom, prevTo);
     return {
       currentRows: current,
       previousRows: previous,
       daily: bucketByDay(current, from, to),
     };
-  }, [all, models, from, to]);
+  }, [all, from, to]);
 
   const hasData = currentRows.length > 0;
 
@@ -116,7 +124,7 @@ export function UsageClient() {
               title="No requests in this period"
               description="Make your first API call to see analytics here."
             >
-              <Button render={<Link href="/docs/quickstart" />}>
+              <Button nativeButton={false} render={<Link href="/docs" />}>
                 Read the quickstart
               </Button>
             </EmptyState>

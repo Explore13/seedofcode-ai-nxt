@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const LINES = [
   { prefix: '$ ', text: 'curl https://api.ai.seedofcode.dev/v1/chat/completions \\' },
-  { prefix: '  ', text: '-H "Authorization: Bearer soc_live_xK9mNpQr2vWz" \\' },
+  { prefix: '  ', text: '-H "x-api-key: soc_live_xK9mNpQr2vWz" \\' },
   { prefix: '  ', text: '-H "Content-Type: application/json" \\' },
   { prefix: '  ', text: '-d \'{"model":"llama3.1:8b","messages":[' },
   { prefix: '  ', text: '     {"role":"user","content":"Plant a prompt."}' },

@@ -3,7 +3,6 @@
 import { Line, LineChart, ResponsiveContainer } from 'recharts';
 import { StatCard, type TrendDirection } from '@/components/shared/StatCard';
 import {
-  formatCredits,
   formatLatency,
   formatNumber,
   formatTokens,
@@ -14,6 +13,7 @@ import {
   type DailyBucket,
 } from '@/lib/usage/aggregate';
 import type { UsageLog } from '@/lib/types';
+import { Coins } from 'lucide-react';
 
 interface SparklineProps {
   data: { v: number }[];
@@ -82,7 +82,8 @@ export function UsageSummaryCards({
     },
     {
       title: 'Credits Spent',
-      value: formatCredits(now.credits),
+      value: formatNumber(now.credits),
+      icon: <Coins className="h-6 w-6 text-chlorophyll" />,
       ...trend(now.credits, prev.credits),
       spark: daily.map((d) => ({ v: d.credits })),
     },
@@ -101,6 +102,8 @@ export function UsageSummaryCards({
           key={c.title}
           title={c.title}
           value={c.value}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          icon={(c as any).icon}
           trendValue={c.trendValue}
           trendDirection={c.trendDirection}
           trendLabel="vs prev period"

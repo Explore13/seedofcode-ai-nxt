@@ -28,7 +28,7 @@ The request was improperly formatted, missing required parameters, or requested 
 *Example: You requested `model: "gpt-4"` which we do not host.*
 
 ### 401 Unauthorized
-The API key is missing, invalid, or has been revoked. Ensure you are sending the key in the `Authorization: Bearer <key>` header and that the key starts with `soc_live_`.
+The API key is missing, invalid, or has been revoked. Ensure you are sending the key in the `x-api-key: <key>` header and that the key starts with `soc_live_`.
 
 ### 402 Payment Required
 Your wallet has insufficient credits to complete the requested inference. 

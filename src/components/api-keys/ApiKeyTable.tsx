@@ -79,7 +79,7 @@ export function ApiKeyTable({
                 {key.lastUsedAt ? formatDate(key.lastUsedAt) : 'Never'}
               </TableCell>
               <TableCell>
-                <Badge variant={key.isActive ? 'outline' : 'ghost'}>
+                <Badge variant={key.isActive ? 'success' : 'ghost'}>
                   <span
                     className={
                       key.isActive

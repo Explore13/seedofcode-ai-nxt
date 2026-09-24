@@ -109,7 +109,7 @@ export function RenameKeyModal({ apiKey, onClose }: RenameKeyModalProps) {
             )}
           </div>
 
-          <DialogFooter className="-mx-4 -mb-4">
+          <DialogFooter>
             <Button
               type="button"
               variant="outline"

@@ -1,0 +1,34 @@
+export const metadata = {
+  title: 'Data Privacy',
+  description: 'How SeedofCode AI protects your data and ensures zero data retention.',
+};
+
+# Data Privacy & Retention
+
+At SeedofCode AI, we believe that your data is yours. Unlike many commercial LLM providers that store your prompts to train future models or keep extensive chat histories, **we practice Zero Data Retention for all model inferences**.
+
+## What We Do NOT Store
+
+- **Prompts**: The text, code, or context you send in the `messages` array is never written to disk or a database.
+- **Completions**: The generated responses returned by our Ollama nodes are never stored.
+- **Chat Histories**: We do not provide a stateful "Threads" or "Conversations" API, because we do not store past messages. You must maintain the chat history in your own application and send the relevant context with each request.
+
+Once a request is completed and the response is sent back to you (or the stream ends), the data is immediately discarded from memory.
+
+## What We DO Store
+
+To provide a secure, metered API service, we strictly log only the metadata required for billing and rate-limiting:
+
+- **Token Counts**: The number of input (`prompt_tokens`) and output (`completion_tokens`) tokens consumed during a request.
+- **Model Name**: Which model was requested (e.g., `llama3.1:8b`).
+- **Timestamps & Durations**: When the request happened and how long the inference took.
+- **API Key ID**: To deduct credits from the correct wallet.
+- **Status Codes**: Whether the request succeeded or failed (e.g., 200, 401).
+
+## Training Policy
+
+Because we do not store your prompts or completions, **your data is never used to train or improve any models**. The open-weights models we serve (Llama, Qwen, Mistral, etc.) are static and do not learn from your interactions.
+
+## Enterprise Security
+
+By enforcing a strict zero-retention policy at the architectural level, SeedofCode AI eliminates the risk of sensitive data leaks or prompt injection vulnerabilities affecting other users. You can safely pass proprietary code, internal documents, and PII through our API knowing it is processed entirely in memory and immediately destroyed.

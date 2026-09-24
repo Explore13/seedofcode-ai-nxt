@@ -1,6 +1,12 @@
 export const metadata = {
-  title: 'Quickstart',
+  title: 'Quickstart | SeedofCode AI Docs',
   description: 'Get started with the SeedofCode AI inference API in minutes.',
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Quickstart | SeedofCode AI Docs',
+    description: 'Get started with the SeedofCode AI inference API in minutes.',
+    type: 'website',
+  },
 };
 
 # Quickstart
@@ -29,41 +35,83 @@ https://api.ai.seedofcode.dev/v1
 
 ## 3. Make a Request
 
-Use the standard `chat/completions` endpoint. Here is how you do it using the official OpenAI Node.js SDK:
+Use the standard `chat/completions` endpoint. 
 
+### Node.js (OpenAI SDK)
 ```javascript
 import OpenAI from "openai";
 
-// 1. Initialize the client with the SeedofCode AI base URL and your key
 const openai = new OpenAI({
   baseURL: "https://api.ai.seedofcode.dev/v1",
-  apiKey: process.env.SOC_API_KEY, // e.g. soc_live_xK9mNpQr2vWz...
+  apiKey: process.env.SOC_API_KEY, 
 });
 
 async function main() {
-  // 2. Call the chat completions endpoint just like normal
   const completion = await openai.chat.completions.create({
-    model: "llama3.1:8b", // Specify an available model
+    model: "llama3.1:8b",
     messages: [
       { role: "system", content: "You are a helpful coding assistant." },
       { role: "user", content: "Write a function to calculate the Fibonacci sequence in Python." },
     ],
   });
-
   console.log(completion.choices[0].message.content);
 }
 
 main();
 ```
 
-### Using cURL
+### Python (OpenAI SDK)
+```python
+from openai import OpenAI
+import os
 
-If you prefer `curl`, it looks exactly like a standard OpenAI request:
+client = OpenAI(
+    base_url="https://api.ai.seedofcode.dev/v1",
+    api_key=os.environ.get("SOC_API_KEY")
+)
+
+completion = client.chat.completions.create(
+    model="llama3.1:8b",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Write a haiku about programming."}
+    ]
+)
+
+print(completion.choices[0].message.content)
+```
+
+### Java (OkHttp)
+```java
+import okhttp3.*;
+import java.io.IOException;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"model\":\"llama3.1:8b\",\"messages\":[{\"role\":\"user\",\"content\":\"Hello world\"}]}");
+        
+        Request request = new Request.Builder()
+          .url("https://api.ai.seedofcode.dev/v1/chat/completions")
+          .post(body)
+          .addHeader("Content-Type", "application/json")
+          .addHeader("x-api-key", System.getenv("SOC_API_KEY"))
+          .build();
+
+        Response response = client.newCall(request).execute();
+        System.out.println(response.body().string());
+    }
+}
+```
+
+### cURL
 
 ```bash
 curl https://api.ai.seedofcode.dev/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $SOC_API_KEY" \
+  -H "x-api-key: $SOC_API_KEY" \
   -d '{
     "model": "qwen2.5:7b",
     "messages": [
@@ -75,13 +123,38 @@ curl https://api.ai.seedofcode.dev/v1/chat/completions \
   }'
 ```
 
-## Available Models
+## Server-Sent Events (SSE) Streaming
 
-SeedofCode AI runs a dedicated fleet of Ollama nodes. For a full list of currently active models, you can query the `/models` endpoint:
+For a faster perceived response time, you can stream the response token-by-token using Server-Sent Events (SSE). Simply add `"stream": true` to your request payload.
+
+### Node.js Streaming Example
+```javascript
+async function stream() {
+  const completion = await openai.chat.completions.create({
+    model: "llama3.1:8b",
+    messages: [{ role: "user", content: "Tell me a story." }],
+    stream: true,
+  });
+
+  for await (const chunk of completion) {
+    process.stdout.write(chunk.choices[0]?.delta?.content || "");
+  }
+}
+```
+
+## Available Endpoints
+
+The API provides the following core endpoints:
+
+- `GET /api/models` (or `/v1/models`): List all available models.
+- `POST /v1/chat/completions`: Chat completions endpoint (supports `stream: true`).
+- `POST /v1/completions`: Legacy completions endpoint (supports `stream: true`).
+
+You can query the available models like so:
 
 ```bash
 curl https://api.ai.seedofcode.dev/api/models \
-  -H "Authorization: Bearer $SOC_API_KEY"
+  -H "x-api-key: $SOC_API_KEY"
 ```
 
 Commonly available models include:
@@ -91,6 +164,7 @@ Commonly available models include:
 
 ## Next Steps
 
-- Understand how [Authentication](/docs/auth) works.
+- Understand how [API Keys & Auth](/docs/api-keys) works.
+- Read our [Data Privacy Policy](/docs/data-privacy) to see why your data is safe.
 - Learn about [Usage & Limits](/docs/usage) and how your credits are calculated.
 - See more examples in [SDK Compatibility](/docs/sdk-compat).

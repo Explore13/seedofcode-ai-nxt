@@ -33,8 +33,14 @@ export function ApiKeysClient() {
   const activeCount = keys?.filter((k) => k.isActive).length ?? 0;
   const limitReached = activeCount >= MAX_ACTIVE_KEYS;
 
+  function showReveal(rawKey: string, name: string) {
+    // Defer until the create/regenerate dialog has fully closed — swapping two
+    // base-ui dialogs in the same frame can leave the body pointer-locked.
+    window.setTimeout(() => setReveal({ rawKey, name }), 250);
+  }
+
   function handleCreated(result: CreateApiKeyResult) {
-    setReveal({ rawKey: result.rawKey, name: result.apiKey.name });
+    showReveal(result.rawKey, result.apiKey.name);
   }
 
   async function handleToggleActive(key: ApiKey) {
@@ -141,7 +147,7 @@ export function ApiKeysClient() {
       <RegenerateKeyDialog
         apiKey={regenTarget}
         onClose={() => setRegenTarget(null)}
-        onRegenerated={(rawKey, name) => setReveal({ rawKey, name })}
+        onRegenerated={(rawKey, name) => showReveal(rawKey, name)}
       />
       <DeleteKeyDialog
         apiKey={deleteTarget}

@@ -98,7 +98,7 @@ export function SettingsClient() {
               label="Email verified"
               value={
                 user.verified ? (
-                  <Badge variant="outline">Verified</Badge>
+                  <Badge variant="success">Verified</Badge>
                 ) : (
                   <Badge variant="destructive">Unverified</Badge>
                 )

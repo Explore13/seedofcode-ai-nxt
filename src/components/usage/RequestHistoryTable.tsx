@@ -24,13 +24,13 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useUsagePage } from '@/hooks/useUsagePage';
 import {
-  formatCredits,
   formatLatency,
   formatNumber,
   formatTimestamp,
@@ -45,6 +45,7 @@ import {
   Filter,
   History,
   ListFilter,
+  Coins,
 } from 'lucide-react';
 
 type StatusFilter = 'all' | 'success' | 'failed';
@@ -171,11 +172,10 @@ export function RequestHistoryTable() {
                 type="button"
                 aria-pressed={status === s.value}
                 onClick={() => setStatus(s.value)}
-                className={`rounded-[7px] px-2.5 py-1 text-xs font-medium transition-colors ${
-                  status === s.value
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
+                className={`rounded-[7px] px-2.5 py-1 text-xs font-medium transition-colors ${status === s.value
+                  ? 'bg-primary text-primary-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+                  }`}
               >
                 {s.label}
               </button>
@@ -193,7 +193,9 @@ export function RequestHistoryTable() {
                 : `${models.length} model${models.length > 1 ? 's' : ''}`}
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
-              <DropdownMenuLabel>Filter this page</DropdownMenuLabel>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Filter this page</DropdownMenuLabel>
+              </DropdownMenuGroup>
               <DropdownMenuSeparator />
               {pageModels.map((m) => (
                 <DropdownMenuCheckboxItem
@@ -307,11 +309,14 @@ export function RequestHistoryTable() {
                       {formatLatency(r.latencyMs)}
                     </TableCell>
                     <TableCell className="text-right font-mono text-xs">
-                      {formatCredits(r.creditsCost)}
+                      <span className="inline-flex items-center justify-end gap-1">
+                        <Coins className="h-3 w-3 text-chlorophyll" />
+                        {formatNumber(r.creditsCost)}
+                      </span>
                     </TableCell>
                     <TableCell>
                       <Badge
-                        variant={isFailed(r.status) ? 'destructive' : 'outline'}
+                        variant={isFailed(r.status) ? 'destructive' : 'success'}
                       >
                         {r.status.toUpperCase()}
                       </Badge>
@@ -369,92 +374,108 @@ export function RequestHistoryTable() {
           {selected && (
             <>
               <SheetHeader>
-                <SheetTitle>Request detail</SheetTitle>
-                <SheetDescription className="font-mono text-xs">
-                  {selected.id}
+                <SheetTitle>Request Details</SheetTitle>
+                <SheetDescription className="font-mono text-xs text-muted-foreground">
+                  ID: {selected.id}
                 </SheetDescription>
               </SheetHeader>
-              <div className="space-y-4 overflow-y-auto px-4 pb-4">
-                <DetailRow
-                  label="Timestamp"
-                  value={formatTimestamp(selected.createdAt)}
-                  mono
-                />
-                <DetailRow label="Model" value={selected.model} mono />
-                <DetailRow
-                  label="Status"
-                  value={
-                    <Badge
-                      variant={
-                        isFailed(selected.status) ? 'destructive' : 'outline'
-                      }
-                    >
-                      {selected.status.toUpperCase()}
-                    </Badge>
-                  }
-                />
-                <DetailRow
-                  label="Prompt tokens"
-                  value={formatNumber(selected.promptTokens)}
-                  mono
-                />
-                <DetailRow
-                  label="Output tokens"
-                  value={formatNumber(selected.completionTokens)}
-                  mono
-                />
-                <DetailRow
-                  label="Total tokens"
-                  value={formatNumber(totalTokens(selected))}
-                  mono
-                />
-                <DetailRow
-                  label="Latency"
-                  value={formatLatency(selected.latencyMs)}
-                  mono
-                />
-                <DetailRow
-                  label="Credits"
-                  value={formatCredits(selected.creditsCost)}
-                  mono
-                />
-                <DetailRow
-                  label="API key"
-                  value={selected.apiKeyId ?? '—'}
-                  mono
-                />
+              <div className="flex-1 space-y-6 overflow-y-auto px-4 pb-4">
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-foreground">General</h4>
+                  <DetailRow
+                    label="Timestamp"
+                    value={formatTimestamp(selected.createdAt)}
+                    mono
+                  />
+                  <DetailRow label="Model" value={selected.model} mono />
+                  <DetailRow
+                    label="Status"
+                    value={
+                      <Badge
+                        variant={
+                          isFailed(selected.status) ? 'destructive' : 'success'
+                        }
+                      >
+                        {selected.status.toUpperCase()}
+                      </Badge>
+                    }
+                  />
+                </div>
 
-                {isFailed(selected.status) && (
-                  <div className="rounded-control border-danger/30 bg-danger/5 text-muted-foreground border p-3 text-xs">
-                    This request{' '}
-                    {selected.status === 'timeout' ? 'timed out' : 'failed'}.
-                    The API does not record a per-request error message.
-                  </div>
-                )}
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-foreground">Usage</h4>
+                  <DetailRow
+                    label="Prompt tokens"
+                    value={formatNumber(selected.promptTokens)}
+                    mono
+                  />
+                  <DetailRow
+                    label="Output tokens"
+                    value={formatNumber(selected.completionTokens)}
+                    mono
+                  />
+                  <DetailRow
+                    label="Total tokens"
+                    value={formatNumber(totalTokens(selected))}
+                    mono
+                  />
+                  <DetailRow
+                    label="Latency"
+                    value={formatLatency(selected.latencyMs)}
+                    mono
+                  />
+                </div>
 
-                {selected.creditTransactions &&
-                  selected.creditTransactions.length > 0 && (
-                    <div>
-                      <h4 className="text-foreground mb-2 text-xs font-medium">
-                        Credit transactions
-                      </h4>
-                      <ul className="space-y-1">
-                        {selected.creditTransactions.map((t) => (
-                          <li
-                            key={t.id}
-                            className="flex items-center justify-between text-xs"
-                          >
-                            <span className="text-muted-foreground">
-                              {t.reason}
-                            </span>
-                            <span className="font-mono">
-                              {formatNumber(t.amount)}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium text-foreground">Billing</h4>
+                  <DetailRow
+                    label="Credits Cost"
+                    value={
+                      <span className="inline-flex items-center gap-1">
+                        <Coins className="h-4 w-4 text-chlorophyll" />
+                        {formatNumber(selected.creditsCost)}
+                      </span>
+                    }
+                    mono
+                  />
+                  <DetailRow
+                    label="API key"
+                    value={selected.apiKeyId ?? '—'}
+                    mono
+                  />
+
+                  {isFailed(selected.status) && (
+                    <div className="rounded-control border-danger/30 bg-danger/5 text-muted-foreground border p-3 text-xs">
+                      This request{' '}
+                      {selected.status === 'timeout' ? 'timed out' : 'failed'}.
+                      The API does not record a per-request error message.
                     </div>
                   )}
+
+                  {selected.creditTransactions &&
+                    selected.creditTransactions.length > 0 && (
+                      <div>
+                        <h4 className="text-sm font-medium text-foreground mb-2">
+                          Credit transactions
+                        </h4>
+                        <ul className="space-y-1">
+                          {selected.creditTransactions.map((t) => (
+                            <li
+                              key={t.id}
+                              className="flex items-center justify-between text-xs"
+                            >
+                              <span className="text-muted-foreground">
+                                {t.reason}
+                              </span>
+                              <span className="font-mono">
+                                {formatNumber(t.amount)}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                </div>
               </div>
             </>
           )}

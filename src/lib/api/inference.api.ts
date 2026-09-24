@@ -21,6 +21,8 @@ interface StreamChatHandlers {
   token: string | null;
   signal: AbortSignal;
   onToken: (delta: string) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onChunk?: (chunk: any) => void;
 }
 
 /**
@@ -33,8 +35,9 @@ interface StreamChatHandlers {
  */
 export async function streamChat(
   params: StreamChatParams,
-  { token, signal, onToken }: StreamChatHandlers,
+  handlers: StreamChatHandlers,
 ): Promise<void> {
+  const { token, signal, onToken } = handlers;
   const res = await fetch(`${env.apiBaseUrl}/chat/stream`, {
     method: 'POST',
     headers: {
@@ -80,6 +83,7 @@ export async function streamChat(
         const delta: string | undefined =
           chunk?.message?.content ?? chunk?.response;
         if (delta) onToken(delta);
+        if (handlers.onChunk) handlers.onChunk(chunk);
       } catch {
         // ignore keep-alive / non-JSON frames
       }

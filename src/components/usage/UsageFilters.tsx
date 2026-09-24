@@ -14,6 +14,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -135,7 +136,9 @@ export function UsageFilters({
           <ChevronDown className="text-muted-foreground h-3.5 w-3.5" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-52">
-          <DropdownMenuLabel>Filter by model</DropdownMenuLabel>
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Filter by model</DropdownMenuLabel>
+          </DropdownMenuGroup>
           <DropdownMenuSeparator />
           {availableModels.map((model) => (
             <DropdownMenuCheckboxItem

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import { CodeBlock } from '@/components/shared/CodeBlock';
 
 const STEPS = [
   {
@@ -66,10 +67,8 @@ function QuickstartStep({ step, isLast }: StepProps) {
             {step.description}
           </p>
         </div>
-        <div className="relative overflow-hidden rounded-card border border-border bg-pine dark:bg-pine">
-          <pre className="overflow-x-auto p-5 font-mono text-xs leading-relaxed text-[#c8d9c2]">
-            <code>{step.code}</code>
-          </pre>
+        <div className="relative overflow-hidden rounded-card">
+          <CodeBlock code={step.code} language={step.lang} />
         </div>
       </div>
     </div>
