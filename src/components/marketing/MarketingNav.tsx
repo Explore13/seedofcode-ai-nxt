@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Leaf } from 'lucide-react';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { ComingSoonDialog } from '@/components/shared/ComingSoonDialog';
-import { cn } from '@/lib/cn';
 
 export function MarketingNav() {
   const [pricingOpen, setPricingOpen] = useState(false);

@@ -15,16 +15,9 @@ import { type NextRequest, NextResponse } from 'next/server';
  */
 
 const APP_ROUTES = ['/home', '/api-keys', '/usage', '/settings'];
-const AUTH_ROUTES = ['/login', '/register', '/verify'];
 
 function isAppRoute(pathname: string): boolean {
   return APP_ROUTES.some(
-    (route) => pathname === route || pathname.startsWith(route + '/'),
-  );
-}
-
-function isAuthRoute(pathname: string): boolean {
-  return AUTH_ROUTES.some(
     (route) => pathname === route || pathname.startsWith(route + '/'),
   );
 }

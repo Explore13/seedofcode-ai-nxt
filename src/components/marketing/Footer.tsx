@@ -2,12 +2,6 @@ import Link from 'next/link';
 import { Leaf } from 'lucide-react';
 import { env } from '@/lib/env';
 
-const NAV_LINKS = [
-  { label: 'Docs', href: '/docs' },
-  { label: 'API Keys', href: '/api-keys' },
-  { label: 'Usage', href: '/usage' },
-];
-
 const FOOTER_COLS = [
   {
     heading: 'Product',

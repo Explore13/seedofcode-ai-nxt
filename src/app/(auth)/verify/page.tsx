@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Leaf, Mail, ArrowLeft, Loader2, RotateCcw } from 'lucide-react';
+import { Mail, ArrowLeft, Loader2, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { authApi } from '@/lib/api';
 import { useAuthStore } from '@/store/auth.store';

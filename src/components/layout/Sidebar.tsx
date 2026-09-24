@@ -11,6 +11,7 @@ import {
   Settings,
   ChevronLeft,
   Leaf,
+  Sparkles,
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
@@ -19,6 +20,7 @@ const navItems = [
   { href: '/home', label: 'Overview', icon: LayoutDashboard },
   { href: '/api-keys', label: 'API Keys', icon: Key },
   { href: '/usage', label: 'Usage', icon: BarChart3 },
+  { href: '/playground', label: 'Playground', icon: Sparkles },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
@@ -37,15 +39,14 @@ function NavLink({
   onClick?: () => void;
 }) {
   const pathname = usePathname();
-  const active =
-    pathname === item.href || pathname.startsWith(item.href + '/');
+  const active = pathname === item.href || pathname.startsWith(item.href + '/');
 
   return (
     <Link
       href={item.href}
       onClick={onClick}
       className={cn(
-        'group flex items-center gap-3 rounded-control px-3 py-2 text-sm font-medium transition-colors',
+        'group rounded-control flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors',
         active
           ? 'bg-primary/10 text-primary dark:text-chlorophyll'
           : 'text-muted-foreground hover:bg-surface-2 hover:text-foreground',
@@ -70,20 +71,20 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   return (
     <aside
       className={cn(
-        'fixed inset-y-0 left-0 z-30 flex flex-col border-r border-border bg-surface transition-all duration-300',
+        'border-border bg-surface fixed inset-y-0 left-0 z-30 flex flex-col border-r transition-all duration-300',
         collapsed ? 'w-16' : 'w-60',
       )}
     >
       {/* Logo */}
       <div
         className={cn(
-          'flex h-14 items-center border-b border-border px-4',
+          'border-border flex h-14 items-center border-b px-4',
           collapsed ? 'justify-center' : 'gap-2',
         )}
       >
-        <Leaf className="h-5 w-5 shrink-0 text-primary dark:text-chlorophyll" />
+        <Leaf className="text-primary dark:text-chlorophyll h-5 w-5 shrink-0" />
         {!collapsed && (
-          <span className="font-display text-sm font-semibold tracking-tight text-foreground">
+          <span className="font-display text-foreground text-sm font-semibold tracking-tight">
             SeedofCode AI
           </span>
         )}
@@ -101,11 +102,11 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       </nav>
 
       {/* Collapse toggle */}
-      <div className="border-t border-border p-2">
+      <div className="border-border border-t p-2">
         <button
           onClick={onToggle}
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="flex w-full items-center justify-center rounded-control p-2 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground"
+          className="rounded-control text-muted-foreground hover:bg-surface-2 hover:text-foreground flex w-full items-center justify-center p-2 transition-colors"
         >
           <ChevronLeft
             className={cn(
@@ -126,15 +127,15 @@ export function MobileSidebar() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
-        className="inline-flex items-center justify-center rounded-control p-2 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground md:hidden"
+        className="rounded-control text-muted-foreground hover:bg-surface-2 hover:text-foreground inline-flex items-center justify-center p-2 transition-colors md:hidden"
         aria-label="Open navigation"
       >
         <Menu className="h-5 w-5" />
       </SheetTrigger>
-      <SheetContent side="left" className="w-64 p-0 bg-surface">
-        <div className="flex h-14 items-center gap-2 border-b border-border px-4">
-          <Leaf className="h-5 w-5 text-primary dark:text-chlorophyll" />
-          <span className="font-display text-sm font-semibold text-foreground">
+      <SheetContent side="left" className="bg-surface w-64 p-0">
+        <div className="border-border flex h-14 items-center gap-2 border-b px-4">
+          <Leaf className="text-primary dark:text-chlorophyll h-5 w-5" />
+          <span className="font-display text-foreground text-sm font-semibold">
             SeedofCode AI
           </span>
         </div>

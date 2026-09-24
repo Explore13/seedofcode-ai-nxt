@@ -172,6 +172,14 @@ export interface TodayUsageSummary {
   totalRequests: number;
 }
 
+/* ── Inference (playground) ─────────────────────────────────────────────────── */
+export type ChatRole = 'system' | 'user' | 'assistant';
+
+export interface ChatMessage {
+  role: ChatRole;
+  content: string;
+}
+
 /* ── Models ───────────────────────────────────────────────────────────────── */
 export type ModelProvider = 'ollama';
 

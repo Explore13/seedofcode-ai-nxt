@@ -62,11 +62,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     td: ({ className, ...props }) => (
       <td className={cn("border-b border-border py-4 px-4 text-muted-foreground", className)} {...props} />
     ),
-    pre: ({ children, ...props }) => {
+    pre: ({ children, ..._props }) => {
       let codeString = '';
       let language = 'bash';
 
       if (children && typeof children === 'object' && 'props' in children) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const childProps = (children as any).props;
         if (typeof childProps.children === 'string') {
           codeString = childProps.children.trim();
