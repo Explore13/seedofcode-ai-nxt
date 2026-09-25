@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const LINES = [
   { prefix: '$ ', text: 'curl https://api.ai.seedofcode.dev/api/chat \\' },
-  { prefix: '  ', text: '-H "x-api-key: soc_live_xK9mNpQr2vWz" \\' },
+  { prefix: '  ', text: '-H "x-api-key: soc_live_your_api_key_here" \\' },
   { prefix: '  ', text: '-H "Content-Type: application/json" \\' },
   { prefix: '  ', text: '-d \'{"model":"qwen2.5vl:7b","messages":[' },
   { prefix: '  ', text: '     {"role":"user","content":"Plant a prompt."}' },
