@@ -1,7 +1,240 @@
 export const metadata = {
-  title: 'Quickstart',
+  title: 'Quickstart | SeedofCode AI Docs',
   description: 'Get started with the SeedofCode AI inference API in minutes.',
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Quickstart | SeedofCode AI Docs',
+    description: 'Get started with the SeedofCode AI inference API in minutes.',
+    type: 'website',
+  },
 };
+
+export const axiosNonStream = `
+import axios from 'axios';
+
+async function main() {
+  const response = await axios.post(
+    'https://api.ai.seedofcode.dev/api/chat',
+    {
+      model: 'qwen2.5vl:7b',
+      messages: [{ role: 'user', content: 'What is 2+2?' }]
+    },
+    {
+      headers: {
+        'Authorization': \`Bearer \${process.env.SOC_API_KEY}\`,
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+  console.log(response.data.message.content);
+}
+main();
+`;
+
+export const pythonNonStream = `
+import requests
+import os
+
+response = requests.post(
+    "https://api.ai.seedofcode.dev/api/chat",
+    headers={
+        "Authorization": f"Bearer {os.getenv('SOC_API_KEY')}",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model": "qwen2.5vl:7b",
+        "messages": [{"role": "user", "content": "What is 2+2?"}]
+    }
+)
+
+print(response.json()["message"]["content"])
+`;
+
+export const javaNonStream = `
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        String payload = "{\\"model\\":\\"qwen2.5vl:7b\\",\\"messages\\":[{\\"role\\":\\"user\\",\\"content\\":\\"What is 2+2?\\"}]}";
+        
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create("https://api.ai.seedofcode.dev/api/chat"))
+            .header("Authorization", "Bearer " + System.getenv("SOC_API_KEY"))
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(payload))
+            .build();
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        
+        System.out.println(response.body());
+    }
+}
+`;
+
+export const curlNonStream = `
+curl https://api.ai.seedofcode.dev/api/chat \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer $SOC_API_KEY" \\
+  -d '{
+    "model": "qwen2.5vl:7b",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Explain quantum computing in one sentence."
+      }
+    ]
+  }'
+`;
+
+export const nodeStream = `
+async function streamChat() {
+  const response = await fetch('https://api.ai.seedofcode.dev/api/chat/stream', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': \`Bearer \${process.env.SOC_API_KEY}\`
+    },
+    body: JSON.stringify({
+      model: 'qwen2.5vl:7b',
+      messages: [{ role: 'user', content: 'Say hello in 5 words.' }],
+      stream: true
+    })
+  });
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    
+    const chunk = decoder.decode(value);
+    const lines = chunk.split('\\n');
+    
+    for (const line of lines) {
+      if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+        const payload = JSON.parse(line.replace('data: ', ''));
+        if (payload.message?.content) {
+          process.stdout.write(payload.message.content);
+        }
+      }
+    }
+  }
+}
+streamChat();
+`;
+
+export const pythonStream = `
+import requests
+import os
+import json
+
+response = requests.post(
+    "https://api.ai.seedofcode.dev/api/chat/stream",
+    headers={
+        "Authorization": f"Bearer {os.getenv('SOC_API_KEY')}",
+        "Content-Type": "application/json"
+    },
+    json={
+        "model": "qwen2.5vl:7b",
+        "messages": [{"role": "user", "content": "Say hello in 5 words."}],
+        "stream": True
+    },
+    stream=True
+)
+
+for line in response.iter_lines():
+    if line:
+        decoded_line = line.decode('utf-8')
+        if decoded_line.startswith('data: ') and decoded_line != 'data: [DONE]':
+            payload = json.loads(decoded_line[6:])
+            content = payload.get("message", {}).get("content", "")
+            print(content, end="", flush=True)
+`;
+
+export const javaStream = `
+// Java HTTP Client currently requires manual stream processing or third-party libraries like OkHttp/Retrofit for clean SSE handling.
+// Example using basic InputStream:
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.OutputStream;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        URL url = new URL("https://api.ai.seedofcode.dev/api/chat/stream");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Authorization", "Bearer " + System.getenv("SOC_API_KEY"));
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setDoOutput(true);
+
+        String payload = "{\\"model\\":\\"qwen2.5vl:7b\\",\\"messages\\":[{\\"role\\":\\"user\\",\\"content\\":\\"Hello\\"}],\\"stream\\":true}";
+        
+        try(OutputStream os = con.getOutputStream()) {
+            byte[] input = payload.getBytes("utf-8");
+            os.write(input, 0, input.length);			
+        }
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
+        String responseLine = null;
+        while ((responseLine = br.readLine()) != null) {
+            if (responseLine.startsWith("data: ") && !responseLine.equals("data: [DONE]")) {
+                // Parse JSON payload here to extract delta content
+                System.out.println(responseLine);
+            }
+        }
+    }
+}
+`;
+
+export const nodeSdk = `
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  baseURL: "https://api.ai.seedofcode.dev/api",
+  apiKey: process.env.SOC_API_KEY, 
+});
+
+async function main() {
+  const completion = await openai.chat.completions.create({
+    model: "qwen2.5vl:7b",
+    messages: [
+      { role: "system", content: "You are a helpful coding assistant." },
+      { role: "user", content: "Write a function to calculate the Fibonacci sequence in Python." },
+    ],
+  });
+  console.log(completion.choices[0].message.content);
+}
+
+main();
+`;
+
+export const pythonSdk = `
+from openai import OpenAI
+import os
+
+client = OpenAI(
+    base_url="https://api.ai.seedofcode.dev/api",
+    api_key=os.environ.get("SOC_API_KEY")
+)
+
+completion = client.chat.completions.create(
+    model="qwen2.5vl:7b",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Write a haiku about programming."}
+    ]
+)
+
+print(completion.choices[0].message.content)
+`;
 
 # Quickstart
 
@@ -24,73 +257,63 @@ Configure your client to point to our API instead of OpenAI's default endpoints.
 
 The SeedofCode AI base URL is:
 ```text
-https://api.ai.seedofcode.dev/v1
+https://api.ai.seedofcode.dev/api
 ```
 
-## 3. Make a Request
+## 3. Interactive API Tester
 
-Use the standard `chat/completions` endpoint. Here is how you do it using the official OpenAI Node.js SDK:
+Test the API right now in your browser! Head over to the [API Playground](/docs/playground) to enter your API key, edit the raw JSON payload, and see the live response.
 
-```javascript
-import OpenAI from "openai";
+## 4. Make a Request
 
-// 1. Initialize the client with the SeedofCode AI base URL and your key
-const openai = new OpenAI({
-  baseURL: "https://api.ai.seedofcode.dev/v1",
-  apiKey: process.env.SOC_API_KEY, // e.g. soc_live_xK9mNpQr2vWz...
-});
+We support three primary ways to interact with our API: Non-Streaming, Streaming (SSE), and drop-in integration with the official OpenAI SDKs.
 
-async function main() {
-  // 2. Call the chat completions endpoint just like normal
-  const completion = await openai.chat.completions.create({
-    model: "llama3.1:8b", // Specify an available model
-    messages: [
-      { role: "system", content: "You are a helpful coding assistant." },
-      { role: "user", content: "Write a function to calculate the Fibonacci sequence in Python." },
-    ],
-  });
+### 4.1 Non-Streaming Request
+Generates a response for a given chat conversation. The request blocks until the full response is generated and returns a single JSON object.
 
-  console.log(completion.choices[0].message.content);
-}
+<CodeTabs items={[
+  { label: 'Node.js (Axios)', language: 'javascript', code: axiosNonStream },
+  { label: 'Python (Requests)', language: 'python', code: pythonNonStream },
+  { label: 'Java (HttpClient)', language: 'java', code: javaNonStream },
+  { label: 'cURL', language: 'bash', code: curlNonStream }
+]} />
 
-main();
-```
+### 4.2 Streaming Request (SSE)
+For a faster perceived response time, you can stream the response token-by-token using Server-Sent Events (SSE). Simply add `"stream": true` to your request payload.
 
-### Using cURL
+<CodeTabs items={[
+  { label: 'Node.js (Fetch)', language: 'javascript', code: nodeStream },
+  { label: 'Python', language: 'python', code: pythonStream },
+  { label: 'Java', language: 'java', code: javaStream }
+]} />
 
-If you prefer `curl`, it looks exactly like a standard OpenAI request:
+### 4.3 Using the OpenAI SDK
+If you already use the official OpenAI SDKs, you do not need to write custom REST requests. Just configure the `baseURL`!
 
-```bash
-curl https://api.ai.seedofcode.dev/v1/chat/completions \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $SOC_API_KEY" \
-  -d '{
-    "model": "qwen2.5:7b",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Explain quantum computing in one sentence."
-      }
-    ]
-  }'
-```
+<CodeTabs items={[
+  { label: 'Node.js (OpenAI SDK)', language: 'javascript', code: nodeSdk },
+  { label: 'Python (OpenAI SDK)', language: 'python', code: pythonSdk }
+]} />
 
-## Available Models
+## Available Endpoints
 
-SeedofCode AI runs a dedicated fleet of Ollama nodes. For a full list of currently active models, you can query the `/models` endpoint:
+The API provides the following core endpoints:
+
+- `GET /api/models`: List all available models.
+- `POST /api/chat`: Standard chat completion endpoint.
+- `POST /api/chat/stream`: Streaming chat completion endpoint.
+- `POST /api/generate`: Generate raw completion (supports `stream: true`).
+
+You can query the available models like so:
 
 ```bash
 curl https://api.ai.seedofcode.dev/api/models \
   -H "Authorization: Bearer $SOC_API_KEY"
 ```
 
-Commonly available models include:
-- `llama3.1:8b` and `llama3.1:70b`
-- `qwen2.5:7b` and `qwen2.5:32b`
-- `mistral:7b`
-
 ## Next Steps
 
-- Understand how [Authentication](/docs/auth) works.
+- Understand how [API Keys & Auth](/docs/api-keys) works.
+- Read our [Data Privacy Policy](/docs/data-privacy) to see why your data is safe.
 - Learn about [Usage & Limits](/docs/usage) and how your credits are calculated.
 - See more examples in [SDK Compatibility](/docs/sdk-compat).

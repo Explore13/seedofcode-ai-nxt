@@ -1,4 +1,5 @@
 import { cn } from '@/lib/cn';
+import { CodeBlock } from '@/components/shared/CodeBlock';
 
 const STEPS = [
   {
@@ -18,7 +19,7 @@ const STEPS = [
     code: `import OpenAI from "openai";
 
 const client = new OpenAI({
-  baseURL: "https://api.ai.seedofcode.dev/v1",
+  baseURL: "https://api.ai.seedofcode.dev/api",
   apiKey: "soc_live_your_key_here",
 });`,
     lang: 'js',
@@ -29,7 +30,7 @@ const client = new OpenAI({
     description:
       'Use the same chat/completions interface you already know. Pick any available model — llama, qwen, mistral, and more.',
     code: `const response = await client.chat.completions.create({
-  model: "llama3.1:8b",
+  model: "qwen2.5vl:7b",
   messages: [
     { role: "user", content: "Plant a prompt." }
   ],
@@ -66,10 +67,8 @@ function QuickstartStep({ step, isLast }: StepProps) {
             {step.description}
           </p>
         </div>
-        <div className="relative overflow-hidden rounded-card border border-border bg-pine dark:bg-pine">
-          <pre className="overflow-x-auto p-5 font-mono text-xs leading-relaxed text-[#c8d9c2]">
-            <code>{step.code}</code>
-          </pre>
+        <div className="relative overflow-hidden rounded-card">
+          <CodeBlock code={step.code} language={step.lang} />
         </div>
       </div>
     </div>

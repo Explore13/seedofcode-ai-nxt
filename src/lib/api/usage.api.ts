@@ -11,15 +11,16 @@ import type {
 /**
  * Usage analytics (backend prefix `/usage`, JWT).
  *
- * P8a note: the list endpoint supports ONLY `page` + `limit` (limit ≤ 100).
- * There is no server-side date/model filter — the analytics page fetches rows
- * and aggregates/filters client-side.
+ * P8a note: the list endpoint supports `page` + `limit` + `models`.
+ * Date range is filtered client-side.
  */
 export const usageApi = {
   list(query: UsageQuery = {}): Promise<Paginated<UsageLog>> {
-    const params: Record<string, number> = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const params: Record<string, any> = {};
     if (query.page != null) params.page = query.page;
     if (query.limit != null) params.limit = query.limit;
+    if (query.models && query.models.length > 0) params.models = query.models.join(',');
     return apiClient
       .get<ApiEnvelope<UsageLog[]>>('/usage', { params })
       .then(page<UsageLog>);

@@ -35,7 +35,10 @@ export function ComingSoonDialog({
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-end pt-4">
-          <Button render={<a href={`mailto:${email}?subject=SeedOfCode%20Credits`} />}>
+          <Button
+            nativeButton={false}
+            render={<a href={`mailto:${email}?subject=SeedOfCode%20Credits`} />}
+          >
             Contact Us
           </Button>
         </div>

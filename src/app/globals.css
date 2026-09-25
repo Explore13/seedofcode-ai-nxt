@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 /*
  * ─────────────────────────────────────────────────────────────────────────────
@@ -54,17 +55,17 @@
   /* 2 ── Semantic tokens — LIGHT (default) ────────────────────────────────── */
   --surface: #ffffff;
   --surface-2: var(--paper-bright);
-  --border: oklch(0.922 0 0);
+  --border: var(--line-light); /* sage-tinted line, consistent with dark */
   --border-strong: #bccdb4;
   --muted-foreground: oklch(0.556 0 0);
   --subtle-foreground: #7c8c77;
 
-  --primary: oklch(0.205 0 0); /* white text passes AA on this */
-  --primary-hover: #1b5a38;
-  --primary-foreground: oklch(0.985 0 0);
+  --primary: var(--chlorophyll-deep); /* AA-safe green; white text passes */
+  --primary-hover: var(--chlorophyll);
+  --primary-foreground: #ffffff;
 
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: #e4f1ea; /* faint chlorophyll wash — hover/focus surface */
+  --accent-foreground: var(--chlorophyll-deep);
 
   --success: var(--chlorophyll-deep);
   --success-foreground: #ffffff;
@@ -100,15 +101,15 @@
 
   --popover-foreground: oklch(0.145 0 0);
 
-  --secondary: oklch(0.97 0 0);
+  --secondary: #eef4ee;
 
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary-foreground: var(--chlorophyll-deep);
 
-  --muted: oklch(0.97 0 0);
+  --muted: #e8f1ea; /* faint green — button/menu hover surface (light) */
 
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: var(--danger);
 
-  --input: oklch(0.922 0 0);
+  --input: var(--line-light);
 
   --radius: 0.625rem;
 
@@ -154,6 +155,18 @@
   --danger-foreground: #1a0806;
   --info-color: #6bb2c4;
   --info-foreground: #04171d;
+
+  /* Surfaces that shadcn tokens read — MUST be redefined for dark, else they
+   * inherit the light (white) values and pop-overs/cards render on white. */
+  --card: var(--moss);
+  --card-foreground: var(--paper);
+  --popover: var(--moss);
+  --popover-foreground: var(--paper);
+  --secondary: var(--moss-light);
+  --secondary-foreground: var(--paper);
+  --muted: #223a2d; /* green-grey — button/menu hover surface (dark) */
+  --destructive: var(--danger-bright);
+  --input: var(--line-dark);
 
   --ring: var(--chlorophyll-bright);
   --overlay: rgba(0, 0, 0, 0.55);

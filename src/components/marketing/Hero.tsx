@@ -1,7 +1,22 @@
+'use client';
+
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { GerminationAnimation } from './GerminationAnimation';
+import { useAuthStore } from '@/store/auth.store';
 
 export function Hero() {
+  const status = useAuthStore((s) => s.status);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      setIsAuthenticated(true);
+    } else if (typeof document !== 'undefined') {
+      setIsAuthenticated(document.cookie.includes('soc_authed=1'));
+    }
+  }, [status]);
+
   return (
     <section
       aria-labelledby="hero-heading"
@@ -12,19 +27,19 @@ export function Hero() {
         className="pointer-events-none absolute inset-0 -z-10"
         aria-hidden="true"
       >
-        <div className="absolute -top-40 left-1/2 h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-chlorophyll/5 blur-3xl" />
+        <div className="bg-chlorophyll/5 absolute -top-40 left-1/2 h-[500px] w-[700px] -translate-x-1/2 rounded-full blur-3xl" />
       </div>
 
       <div className="mx-auto grid max-w-5xl grid-cols-1 items-center gap-12 px-6 py-24 lg:grid-cols-2 lg:py-32">
         {/* Left — headline + CTAs */}
         <div className="space-y-6">
-          <p className="font-mono text-xs font-medium tracking-widest text-chlorophyll uppercase">
+          <p className="text-chlorophyll font-mono text-xs font-medium tracking-widest uppercase">
             OpenAI-compatible · Ollama-powered
           </p>
 
           <h1
             id="hero-heading"
-            className="font-display text-display font-semibold leading-tight tracking-tight text-foreground"
+            className="font-display text-display text-foreground leading-tight font-semibold tracking-tight"
           >
             Plant a prompt.
             <br />
@@ -33,32 +48,41 @@ export function Hero() {
             into code.
           </h1>
 
-          <p className="max-w-sm text-base leading-relaxed text-muted-foreground">
+          <p className="text-muted-foreground max-w-sm text-base leading-relaxed">
             A self-serve LLM inference API with API keys, usage analytics, and
             pay-per-token pricing. Drop in your{' '}
-            <code className="rounded-chip bg-surface-2 px-1.5 py-0.5 font-mono text-sm text-foreground">
+            <code className="rounded-chip bg-surface-2 text-foreground px-1.5 py-0.5 font-mono text-sm">
               baseURL
             </code>{' '}
             and go.
           </p>
 
           <div className="flex flex-wrap gap-3 pt-2">
-            <Link
-              href="/register"
-              className="rounded-control bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              Get an API key
-            </Link>
+            {!isAuthenticated ? (
+              <Link
+                href="/register"
+                className="rounded-control bg-primary text-primary-foreground hover:bg-primary-hover focus-visible:ring-ring px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              >
+                Get an API key
+              </Link>
+            ) : (
+              <Link
+                href="/home"
+                className="rounded-control bg-primary text-primary-foreground hover:bg-primary-hover focus-visible:ring-ring px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none"
+              >
+                Go to dashboard
+              </Link>
+            )}
             <Link
               href="/docs"
-              className="rounded-control border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="rounded-control border-border text-foreground hover:bg-surface focus-visible:ring-ring border px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none"
             >
               Read the docs
             </Link>
           </div>
 
           {/* Social proof / trust */}
-          <p className="text-xs text-subtle-foreground">
+          <p className="text-subtle-foreground text-xs">
             Free to start · No credit card required
           </p>
         </div>

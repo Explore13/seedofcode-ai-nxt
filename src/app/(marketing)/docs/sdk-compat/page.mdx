@@ -3,62 +3,36 @@ export const metadata = {
   description: 'Using SeedofCode AI with OpenAI client libraries.',
 };
 
-# SDK Compatibility
-
-SeedofCode AI is designed to be a drop-in replacement for the OpenAI API. Our inference endpoints accept the exact same JSON payloads and return the exact same response structures as OpenAI's `/v1/chat/completions` and `/v1/completions` routes.
-
-Because of this, you do not need to install a special SDK to use SeedofCode AI. You can use the official OpenAI libraries for your language of choice.
-
-## Python
-
-Install the official OpenAI Python library:
-
-```bash
-pip install openai
-```
-
-Configure the client to point to SeedofCode AI:
-
-```python
+export const pythonSdkCode = `
 import os
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://api.ai.seedofcode.dev/v1",
+    base_url="https://api.ai.seedofcode.dev/api",
     api_key=os.environ.get("SOC_API_KEY"),
 )
 
 response = client.chat.completions.create(
-    model="llama3.1:8b",
+    model="qwen2.5vl:7b",
     messages=[
         {"role": "user", "content": "Write a python script to reverse a string."}
     ]
 )
 
 print(response.choices[0].message.content)
-```
+`;
 
-## Node.js / TypeScript
-
-Install the official OpenAI Node library:
-
-```bash
-npm install openai
-```
-
-Configure the client:
-
-```typescript
+export const nodeSdkCode = `
 import OpenAI from 'openai';
 
 const client = new OpenAI({
-  baseURL: 'https://api.ai.seedofcode.dev/v1',
+  baseURL: 'https://api.ai.seedofcode.dev/api',
   apiKey: process.env.SOC_API_KEY,
 });
 
 async function main() {
   const response = await client.chat.completions.create({
-    model: 'mistral:7b',
+    model: 'qwen2.5vl:7b',
     messages: [{ role: 'user', content: 'What is the speed of light?' }],
   });
 
@@ -66,23 +40,18 @@ async function main() {
 }
 
 main();
-```
+`;
 
-## Java
-
-Add the official OpenAI Java library to your `pom.xml`:
-
-```xml
+export const javaSdkCode = `
+// First, add the OpenAI Java dependency to your pom.xml:
+/*
 <dependency>
     <groupId>com.openai</groupId>
     <artifactId>openai-java</artifactId>
     <version>0.10.0</version>
 </dependency>
-```
+*/
 
-Configure the client:
-
-```java
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.ChatCompletionCreateParams;
@@ -91,12 +60,12 @@ import com.openai.models.ChatCompletionMessageParam;
 public class Main {
     public static void main(String[] args) {
         OpenAIClient client = OpenAIOkHttpClient.builder()
-            .baseUrl("https://api.ai.seedofcode.dev/v1")
+            .baseUrl("https://api.ai.seedofcode.dev/api")
             .apiKey(System.getenv("SOC_API_KEY"))
             .build();
 
         ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
-            .model("llama3.1:8b")
+            .model("qwen2.5vl:7b")
             .addMessage(ChatCompletionMessageParam.ofUser("Write a hello world in Java"))
             .build();
 
@@ -104,52 +73,66 @@ public class Main {
             .forEach(choice -> System.out.println(choice.message().content().orElse("")));
     }
 }
-```
+`;
 
-## LangChain
-
-SeedofCode AI works seamlessly with LangChain's OpenAI integrations.
-
-### LangChain Python
-
-Use `ChatOpenAI` and override the base URL:
-
-```python
+export const pythonLangchain = `
 from langchain_openai import ChatOpenAI
 import os
 
 llm = ChatOpenAI(
-    model="qwen2.5:7b",
+    model="qwen2.5vl:7b",
     openai_api_key=os.environ.get("SOC_API_KEY"),
-    openai_api_base="https://api.ai.seedofcode.dev/v1"
+    openai_api_base="https://api.ai.seedofcode.dev/api"
 )
 
 response = llm.invoke("Hello, world!")
 print(response.content)
-```
+`;
 
-### LangChain JS/TS
-
-```typescript
+export const nodeLangchain = `
 import { ChatOpenAI } from "@langchain/openai";
 
 const llm = new ChatOpenAI({
-  modelName: "llama3.1:8b",
+  modelName: "qwen2.5vl:7b",
   openAIApiKey: process.env.SOC_API_KEY,
   configuration: {
-    baseURL: "https://api.ai.seedofcode.dev/v1",
+    baseURL: "https://api.ai.seedofcode.dev/api",
   }
 });
 
 const response = await llm.invoke("Hello, world!");
 console.log(response.content);
-```
+`;
+
+# SDK Compatibility
+
+SeedofCode AI is strictly designed to be a drop-in replacement for the OpenAI API. Our inference endpoints accept the exact same JSON payloads and return the exact same response structures as OpenAI's `/chat/completions` routes.
+
+Because of this, you **do not** need to install a special SDK to use SeedofCode AI. You can simply install the official OpenAI library for your language, change the `baseURL`, and pass your SeedofCode API key.
+
+## Official OpenAI SDKs
+
+Our system perfectly mimics the response format of OpenAI, down to the exact `choices[0].message.content` payload hierarchy.
+
+<CodeTabs items={[
+  { label: 'Node.js / TS', language: 'javascript', code: nodeSdkCode },
+  { label: 'Python', language: 'python', code: pythonSdkCode },
+  { label: 'Java', language: 'java', code: javaSdkCode }
+]} />
+
+## LangChain Integration
+
+SeedofCode AI also works seamlessly with LangChain's existing OpenAI integrations by simply overriding the base URL config.
+
+<CodeTabs items={[
+  { label: 'LangChain (Node.js)', language: 'javascript', code: nodeLangchain },
+  { label: 'LangChain (Python)', language: 'python', code: pythonLangchain }
+]} />
 
 ## Supported Endpoints
 
 Currently, SeedofCode AI supports the following OpenAI-compatible endpoints:
-- `POST /v1/chat/completions` (Standard chat and instruction following)
-- `POST /v1/completions` (Legacy text completion)
-- `GET /v1/models` (List available models)
+- **Chat Completions** (Used automatically by the SDK for all chat interactions)
+- **Models** (Used automatically by the SDK to list available models)
 
-Embeddings and Audio endpoints are not currently supported.
+*Note: Embeddings, Image Generation, and Audio endpoints are not currently supported by SeedofCode.*

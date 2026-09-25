@@ -19,6 +19,7 @@ export const metadata: Metadata = {
       'OpenAI-compatible LLM inference powered by Ollama. API keys, usage analytics, pay-per-token.',
     type: 'website',
   },
+  robots: { index: true, follow: true },
 };
 
 /**

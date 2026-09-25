@@ -12,14 +12,14 @@ import { useEffect, useRef, useState } from 'react';
  */
 
 const LINES = [
-  { prefix: '$ ', text: 'curl https://api.ai.seedofcode.dev/v1/chat/completions \\' },
-  { prefix: '  ', text: '-H "Authorization: Bearer soc_live_xK9mNpQr2vWz" \\' },
+  { prefix: '$ ', text: 'curl https://api.ai.seedofcode.dev/api/chat \\' },
+  { prefix: '  ', text: '-H "x-api-key: soc_live_xK9mNpQr2vWz" \\' },
   { prefix: '  ', text: '-H "Content-Type: application/json" \\' },
-  { prefix: '  ', text: '-d \'{"model":"llama3.1:8b","messages":[' },
+  { prefix: '  ', text: '-d \'{"model":"qwen2.5vl:7b","messages":[' },
   { prefix: '  ', text: '     {"role":"user","content":"Plant a prompt."}' },
   { prefix: '  ', text: '   ]}\'' },
   { prefix: '', text: '' },
-  { prefix: '# ', text: '→  {"choices":[{"message":{"content":"Watch it grow into code."}}]}' },
+  { prefix: '# ', text: '→  {"message":{"role":"assistant","content":"Watch it grow into code."}}' },
 ];
 
 const CHAR_DELAY_MS = 22; // ms per character
@@ -111,7 +111,7 @@ export function GerminationAnimation() {
       clearTimeout(timer);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -144,17 +144,16 @@ export function GerminationAnimation() {
                   isComment
                     ? 'text-chlorophyll'
                     : isPrompt
-                    ? 'text-harvest'
-                    : 'text-[#c8d9c2]'
+                      ? 'text-harvest'
+                      : 'text-[#c8d9c2]'
                 }
               >
                 {line}
               </span>
               {isLastLine && !done && (
                 <span
-                  className={`inline-block h-[1em] w-[0.55em] translate-y-[1px] bg-chlorophyll ${
-                    cursorVisible ? 'opacity-100' : 'opacity-0'
-                  } transition-opacity`}
+                  className={`inline-block h-[1em] w-[0.55em] translate-y-[1px] bg-chlorophyll ${cursorVisible ? 'opacity-100' : 'opacity-0'
+                    } transition-opacity`}
                 />
               )}
             </div>

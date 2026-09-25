@@ -28,10 +28,16 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     if (hasRun.current) return;
     hasRun.current = true;
 
-    const refreshToken = hydrateFromStorage();
-    if (!refreshToken) {
-      setStatus('unauthenticated');
-      return;
+    const accessToken = hydrateFromStorage();
+    if (!accessToken) {
+      // Access token is missing, but check if we have the authed cookie.
+      // If we do, we assume the user has an HTTP-only refresh token and we
+      // proceed to call authApi.me() so the interceptor can perform a silent refresh.
+      const hasAuthedCookie = document.cookie.includes('soc_authed=1');
+      if (!hasAuthedCookie) {
+        setStatus('unauthenticated');
+        return;
+      }
     }
 
     // We have a persisted refresh token — attempt silent re-auth then fetch me.

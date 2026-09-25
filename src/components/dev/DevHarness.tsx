@@ -75,7 +75,6 @@ function InterceptorPanel() {
 
   const user = useAuthStore((s) => s.user);
   const accessToken = useAuthStore((s) => s.accessToken);
-  const refreshToken = useAuthStore((s) => s.refreshToken);
   const status = useAuthStore((s) => s.status);
 
   function push(level: LogLevel, label: string, detail: string) {
@@ -140,7 +139,7 @@ function InterceptorPanel() {
 
   const breakThenFetch = () =>
     run('Refresh flow', async () => {
-      if (!refreshToken) {
+      if (status !== 'authenticated') {
         push('info', 'Refresh flow', 'Sign in first (need a refresh token).');
         return;
       }
@@ -170,7 +169,7 @@ function InterceptorPanel() {
 
   const concurrentRefresh = () =>
     run('Concurrent refresh', async () => {
-      if (!refreshToken) {
+      if (status !== 'authenticated') {
         push('info', 'Concurrent refresh', 'Sign in first.');
         return;
       }
@@ -242,10 +241,6 @@ function InterceptorPanel() {
             <StateRow
               label="Access token"
               value={accessToken ? `present (${accessToken.length})` : 'none'}
-            />
-            <StateRow
-              label="Refresh token"
-              value={refreshToken ? 'present' : 'none'}
             />
           </dl>
         </div>

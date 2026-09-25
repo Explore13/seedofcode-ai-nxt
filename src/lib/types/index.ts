@@ -161,6 +161,7 @@ export interface UsageLog {
 export interface UsageQuery {
   page?: number;
   limit?: number;
+  models?: string[];
 }
 
 /** `GET /usage/today` summary. All values are integers. */
@@ -170,6 +171,18 @@ export interface TodayUsageSummary {
   totalTokens: number;
   totalCost: number;
   totalRequests: number;
+}
+
+/* ── Inference (playground) ─────────────────────────────────────────────────── */
+export type ChatRole = 'system' | 'user' | 'assistant';
+
+export interface ChatMessage {
+  role: ChatRole;
+  content: string;
+  stats?: {
+    tokens?: number;
+    durationMs?: number;
+  };
 }
 
 /* ── Models ───────────────────────────────────────────────────────────────── */

@@ -4,8 +4,14 @@ import { Leaf } from 'lucide-react';
 import { RegisterForm } from '@/components/auth/RegisterForm';
 
 export const metadata: Metadata = {
-  title: 'Create account',
-  robots: { index: false },
+  title: 'Create account | SeedofCode AI',
+  description: 'Create a free SeedofCode AI account to get your API keys and start using OpenAI-compatible LLMs.',
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: 'Create account | SeedofCode AI',
+    description: 'Create a free SeedofCode AI account to get your API keys and start using OpenAI-compatible LLMs.',
+    type: 'website',
+  },
 };
 
 export default function RegisterPage() {

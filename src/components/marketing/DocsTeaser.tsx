@@ -3,7 +3,7 @@ import { ArrowRight, Key, BookOpen, Code2 } from 'lucide-react';
 
 const DOCS = [
   {
-    href: '/docs/quickstart',
+    href: '/docs',
     icon: Code2,
     title: 'Quickstart',
     description:

@@ -3,22 +3,24 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/cn';
-import { Book, Key, Link as LinkIcon, AlertCircle, Activity } from 'lucide-react';
+import { Book, Key, Link as LinkIcon, AlertCircle, Activity, Shield, Terminal } from 'lucide-react';
 
 const DOC_LINKS = [
   {
     title: 'Getting Started',
     links: [
       { href: '/docs', label: 'Quickstart', icon: Book },
+      { href: '/docs/playground', label: 'API Playground', icon: Terminal },
       { href: '/docs/sdk-compat', label: 'SDK Compatibility', icon: LinkIcon },
     ],
   },
   {
     title: 'Core Concepts',
     links: [
-      { href: '/docs/auth', label: 'Authentication', icon: Key },
+      { href: '/docs/api-keys', label: 'API Keys & Auth', icon: Key },
       { href: '/docs/errors', label: 'Error Codes', icon: AlertCircle },
       { href: '/docs/usage', label: 'Usage & Limits', icon: Activity },
+      { href: '/docs/data-privacy', label: 'Data Privacy', icon: Shield },
     ],
   },
 ];

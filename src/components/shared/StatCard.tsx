@@ -11,6 +11,7 @@ interface StatCardProps {
   trendDirection?: TrendDirection;
   trendTone?: TrendTone;
   trendLabel?: string;
+  icon?: React.ReactNode;
   sparkline?: React.ReactNode;
   className?: string;
 }
@@ -22,6 +23,7 @@ export function StatCard({
   trendDirection = 'neutral',
   trendTone = 'neutral',
   trendLabel,
+  icon,
   sparkline,
   className,
 }: StatCardProps) {
@@ -29,19 +31,27 @@ export function StatCard({
     trendTone === 'positive'
       ? 'text-success'
       : trendTone === 'negative'
-      ? 'text-danger'
-      : 'text-muted-foreground';
+        ? 'text-danger'
+        : 'text-muted-foreground';
 
   return (
-    <div className={cn('rounded-card border bg-surface p-6', className)}>
-      <h3 className="text-sm font-medium text-subtle-foreground pb-2">
+    <div
+      className={cn(
+        'rounded-card border-border bg-surface border p-6 shadow-[0_1px_2px_rgba(18,48,36,0.04)] dark:shadow-none',
+        className,
+      )}
+    >
+      <h3 className="text-subtle-foreground pb-2 text-sm font-medium">
         {title}
       </h3>
       <div className="flex items-end justify-between">
         <div>
-          <div className="text-2xl font-bold font-mono">{value}</div>
+          <div className="flex items-center gap-2">
+            {icon && <div className="text-muted-foreground">{icon}</div>}
+            <div className="font-mono text-2xl font-bold">{value}</div>
+          </div>
           {trendValue && (
-            <p className="text-xs mt-1 flex items-center">
+            <p className="mt-1 flex items-center text-xs">
               {trendDirection === 'up' && (
                 <ArrowUpIcon className={cn('mr-1 h-3 w-3', toneClass)} />
               )}
@@ -49,7 +59,7 @@ export function StatCard({
                 <ArrowDownIcon className={cn('mr-1 h-3 w-3', toneClass)} />
               )}
               {trendDirection === 'neutral' && (
-                <MinusIcon className="mr-1 h-3 w-3 text-muted-foreground" />
+                <MinusIcon className="text-muted-foreground mr-1 h-3 w-3" />
               )}
               <span className={toneClass}>{trendValue}</span>
               {trendLabel && (

@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { cn } from '@/lib/utils';
 import { CopyButton } from './CopyButton';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
   code: string;
@@ -17,19 +20,26 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        'relative group rounded-card border bg-surface-2',
+        'relative group rounded-card border border-[#24382c] bg-[#0d1117]',
         className
       )}
     >
-      <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity focus-within:opacity-100">
-        <CopyButton value={code} className="bg-surface/50 backdrop-blur-sm shadow-sm" />
+      <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity focus-within:opacity-100 z-10">
+        <CopyButton value={code} className="text-[#8b949e] hover:text-[#c9d1d9] bg-transparent border-none shadow-none" />
       </div>
-      <pre
-        className="overflow-x-auto p-4 text-sm font-mono text-subtle-foreground"
-        {...props}
+      <SyntaxHighlighter
+        language={language}
+        style={vscDarkPlus}
+        customStyle={{
+          margin: 0,
+          background: 'transparent',
+          padding: '1rem',
+          fontSize: '0.875rem',
+        }}
+        {...(props as any)}
       >
-        <code className={`language-${language}`}>{code}</code>
-      </pre>
+        {code}
+      </SyntaxHighlighter>
     </div>
   );
 }
