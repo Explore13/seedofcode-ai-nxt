@@ -19,7 +19,7 @@ const STEPS = [
     code: `import OpenAI from "openai";
 
 const client = new OpenAI({
-  baseURL: "https://api.ai.seedofcode.dev/v1",
+  baseURL: "https://api.ai.seedofcode.dev/api",
   apiKey: "soc_live_your_key_here",
 });`,
     lang: 'js',
@@ -30,7 +30,7 @@ const client = new OpenAI({
     description:
       'Use the same chat/completions interface you already know. Pick any available model — llama, qwen, mistral, and more.',
     code: `const response = await client.chat.completions.create({
-  model: "llama3.1:8b",
+  model: "qwen2.5vl:7b",
   messages: [
     { role: "user", content: "Plant a prompt." }
   ],

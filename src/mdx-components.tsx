@@ -1,10 +1,14 @@
 import type { MDXComponents } from 'mdx/types';
 import { CodeBlock } from '@/components/shared/CodeBlock';
+import { CodeTabs } from '@/components/shared/CodeTabs';
+import { ApiTester } from '@/components/shared/ApiTester';
 import { cn } from '@/lib/cn';
 import Link from 'next/link';
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
+    CodeTabs,
+    ApiTester,
     h1: ({ children, id, className, ...props }) => (
       <h1 id={id} className={cn("mt-2 scroll-m-20 font-display text-4xl font-bold tracking-tight text-foreground", className)} {...props}>
         {children}

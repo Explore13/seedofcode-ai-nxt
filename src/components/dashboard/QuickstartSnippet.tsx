@@ -20,9 +20,9 @@ export function QuickstartSnippet() {
     javascript: `import axios from 'axios';
 
 const response = await axios.post(
-  'https://api.ai.seedofcode.dev/v1/chat/completions',
+  'https://api.ai.seedofcode.dev/api/chat',
   {
-    model: 'llama3.1:8b',
+    model: 'qwen2.5vl:7b',
     messages: [{ role: 'user', content: 'Hello!' }]
   },
   {
@@ -33,7 +33,7 @@ const response = await axios.post(
   }
 );
 
-console.log(response.data.choices[0].message.content);`,
+console.log(response.data.message.content);`,
     python: `import requests
 
 headers = {
@@ -42,17 +42,17 @@ headers = {
 }
 
 data = {
-    "model": "llama3.1:8b",
+    "model": "qwen2.5vl:7b",
     "messages": [{"role": "user", "content": "Hello!"}]
 }
 
 response = requests.post(
-    "https://api.ai.seedofcode.dev/v1/chat/completions",
+    "https://api.ai.seedofcode.dev/api/chat",
     headers=headers,
     json=data
 )
 
-print(response.json()["choices"][0]["message"]["content"])`,
+print(response.json()["message"]["content"])`,
     java: `import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -62,13 +62,13 @@ public class Main {
     public static void main(String[] args) throws Exception {
         String json = """
             {
-                "model": "llama3.1:8b",
+                "model": "qwen2.5vl:7b",
                 "messages": [{"role": "user", "content": "Hello!"}]
             }
             """;
 
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("https://api.ai.seedofcode.dev/v1/chat/completions"))
+            .uri(URI.create("https://api.ai.seedofcode.dev/api/chat"))
             .header("x-api-key", "${keyToDisplay}")
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(json))

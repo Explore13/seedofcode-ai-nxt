@@ -5,7 +5,7 @@ export const metadata = {
 
 # API Keys & Auth
 
-SeedofCode AI uses API keys for authentication. You must include your API key in the `Authorization` HTTP header of every request you make to the inference endpoints.
+SeedofCode AI uses API keys for authentication. You must include your API key in the `Authorization` or `x-api-key` HTTP header of every request you make to the inference endpoints.
 
 ## API Key Format
 
@@ -20,38 +20,50 @@ soc_live_xK9mNpQr2vWzA1b2c3d4e5f6g7h8i9j0
 
 ## Making Authenticated Requests
 
-You can authenticate your requests by passing the key in one of two ways:
+You can authenticate your requests by passing the key in one of three ways:
 
-1. In the `x-api-key` header (Recommended).
+1. As a `Bearer` token in the `Authorization` header (Standard).
 2. As an `api_key` token in the `Authorization` header.
+3. In the `x-api-key` header.
 
-### Example: Raw HTTP (x-api-key Header)
+### Example 1: Authorization Header (Bearer)
+
+Because your API key natively begins with `soc_live_`, you can safely use the standard `Bearer` scheme without confusing it for a JWT.
 
 ```http
-POST /v1/chat/completions HTTP/1.1
+POST /api/chat HTTP/1.1
 Host: api.ai.seedofcode.dev
-x-api-key: soc_live_your_api_key_here
+Authorization: Bearer soc_live_your_api_key_here
 Content-Type: application/json
 ```
 
-### Example: Raw HTTP (Authorization Header)
+### Example 2: Authorization Header (api_key)
 
 ```http
-POST /v1/chat/completions HTTP/1.1
+POST /api/chat HTTP/1.1
 Host: api.ai.seedofcode.dev
 Authorization: api_key soc_live_your_api_key_here
 Content-Type: application/json
 ```
 
+### Example 3: x-api-key Header
+
+```http
+POST /api/chat HTTP/1.1
+Host: api.ai.seedofcode.dev
+x-api-key: soc_live_your_api_key_here
+Content-Type: application/json
+```
+
 ### Example: OpenAI SDK
 
-The OpenAI SDK automatically formats the header for you when you pass the `apiKey` configuration option:
+The OpenAI SDK automatically formats the header for you when you pass the `apiKey` configuration option. By default, it sends it as a `Bearer` token!
 
 ```javascript
 import OpenAI from "openai";
 
 const client = new OpenAI({
-  baseURL: "https://api.ai.seedofcode.dev/v1",
+  baseURL: "https://api.ai.seedofcode.dev/api",
   apiKey: "soc_live_your_api_key_here", // Typically loaded from process.env
 });
 ```
