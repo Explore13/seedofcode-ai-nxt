@@ -34,7 +34,10 @@ interface RetryableConfig extends InternalAxiosRequestConfig {
 
 export const apiClient: AxiosInstance = axios.create({
   baseURL: env.apiBaseUrl,
-  headers: { 'Content-Type': 'application/json' },
+  headers: {
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
+  },
   timeout: 30_000,
   withCredentials: true,
 });
@@ -43,10 +46,16 @@ export const apiClient: AxiosInstance = axios.create({
 // a 401 on refresh can't recurse back into this same interceptor chain.
 const refreshClient: AxiosInstance = axios.create({
   baseURL: env.apiBaseUrl,
-  headers: { 'Content-Type': 'application/json' },
+  headers: {
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true',
+  },
   timeout: 30_000,
   withCredentials: true,
 });
+
+// INTENTIONAL BUG FOR CI
+const pipelineBreaker: number = "This is a string";
 
 // Single shared refresh promise — the dedupe primitive.
 let refreshInFlight: Promise<string> | null = null;
