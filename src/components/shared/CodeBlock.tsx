@@ -20,12 +20,15 @@ export function CodeBlock({
   return (
     <div
       className={cn(
-        'relative group rounded-card border border-[#24382c] bg-[#0d1117]',
-        className
+        'group rounded-card relative border border-[#24382c] bg-[#0d1117]',
+        className,
       )}
     >
-      <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity focus-within:opacity-100 z-10">
-        <CopyButton value={code} className="text-[#8b949e] hover:text-[#c9d1d9] bg-transparent border-none shadow-none" />
+      <div className="absolute top-2 right-2 z-10 opacity-0 transition-opacity group-hover:opacity-100 focus-within:opacity-100">
+        <CopyButton
+          value={code}
+          className="border-none bg-transparent text-[#8b949e] shadow-none hover:text-[#c9d1d9]"
+        />
       </div>
       <SyntaxHighlighter
         language={language}

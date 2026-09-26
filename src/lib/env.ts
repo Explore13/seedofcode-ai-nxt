@@ -10,7 +10,7 @@ function required(value: string | undefined, name: string): string {
   if (!value || value.trim() === '') {
     throw new Error(
       `Missing required environment variable "${name}". ` +
-      'Copy .env.example to .env.local and set it.',
+        'Copy .env.example to .env.local and set it.',
     );
   }
   return value;

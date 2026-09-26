@@ -12,7 +12,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthGuard>
-      <div className="relative flex min-h-dvh bg-background">
+      <div className="bg-background relative flex min-h-dvh">
         {/* Desktop sidebar */}
         <div className="hidden md:block">
           <Sidebar

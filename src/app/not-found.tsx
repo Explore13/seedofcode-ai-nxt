@@ -3,22 +3,23 @@ import { Leaf } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-dvh flex-col bg-background">
+    <div className="bg-background flex min-h-dvh flex-col">
       <div className="flex flex-1 items-center justify-center p-6">
         <div className="mx-auto max-w-md text-center">
           <div className="mb-6 flex justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-surface-2 border border-border">
-              <Leaf className="h-8 w-8 text-chlorophyll" />
+            <div className="bg-surface-2 border-border flex h-16 w-16 items-center justify-center rounded-full border">
+              <Leaf className="text-chlorophyll h-8 w-8" />
             </div>
           </div>
-          <h1 className="font-display text-4xl font-semibold tracking-tight text-foreground">
+          <h1 className="font-display text-foreground text-4xl font-semibold tracking-tight">
             404
           </h1>
-          <h2 className="mt-2 text-xl font-medium text-foreground">
+          <h2 className="text-foreground mt-2 text-xl font-medium">
             Page not found
           </h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
-            The page you&apos;re looking for doesn&apos;t exist or has been moved. Check the URL or navigate back to safety.
+          <p className="text-muted-foreground mt-4 leading-relaxed">
+            The page you&apos;re looking for doesn&apos;t exist or has been
+            moved. Check the URL or navigate back to safety.
           </p>
           <div className="mt-8 flex items-center justify-center gap-4">
             <Link
@@ -29,7 +30,7 @@ export default function NotFound() {
             </Link>
             <Link
               href="/docs"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
+              className="text-muted-foreground hover:text-foreground text-sm font-medium underline-offset-4 hover:underline"
             >
               View Documentation
             </Link>

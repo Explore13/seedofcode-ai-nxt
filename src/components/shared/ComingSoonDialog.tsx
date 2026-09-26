@@ -23,12 +23,14 @@ export function ComingSoonDialog({
 }: ComingSoonDialogProps) {
   // Try to use the configured contact email, fallback if not set.
   const email = env.contactEmail || 'support@ai.seedofcode.dev';
-  
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="font-display">{feature} — Coming Soon</DialogTitle>
+          <DialogTitle className="font-display">
+            {feature} — Coming Soon
+          </DialogTitle>
           <DialogDescription className="text-subtle-foreground pt-2">
             Self-serve billing is on the way. For now, credits are provisioned
             manually — reach out and we&apos;ll top you up.

@@ -49,7 +49,9 @@ export function RegisterForm() {
       setStatus('authenticated');
 
       // Always redirect to verify after fresh register
-      toast.success("Account created! Check your email for a verification code.");
+      toast.success(
+        'Account created! Check your email for a verification code.',
+      );
       router.replace('/verify');
     } catch (err: unknown) {
       const message =
@@ -73,7 +75,7 @@ export function RegisterForm() {
       <div className="space-y-1.5">
         <label
           htmlFor="register-name"
-          className="block text-sm font-medium text-foreground"
+          className="text-foreground block text-sm font-medium"
         >
           Full name
         </label>
@@ -90,7 +92,7 @@ export function RegisterForm() {
           <p
             id="register-name-error"
             role="alert"
-            className="text-xs text-danger"
+            className="text-danger text-xs"
           >
             {errors.name.message}
           </p>
@@ -101,7 +103,7 @@ export function RegisterForm() {
       <div className="space-y-1.5">
         <label
           htmlFor="register-email"
-          className="block text-sm font-medium text-foreground"
+          className="text-foreground block text-sm font-medium"
         >
           Email
         </label>
@@ -118,7 +120,7 @@ export function RegisterForm() {
           <p
             id="register-email-error"
             role="alert"
-            className="text-xs text-danger"
+            className="text-danger text-xs"
           >
             {errors.email.message}
           </p>
@@ -129,7 +131,7 @@ export function RegisterForm() {
       <div className="space-y-1.5">
         <label
           htmlFor="register-password"
-          className="block text-sm font-medium text-foreground"
+          className="text-foreground block text-sm font-medium"
         >
           Password
         </label>
@@ -150,7 +152,7 @@ export function RegisterForm() {
             type="button"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
             onClick={() => setShowPassword((s) => !s)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" />
@@ -163,7 +165,7 @@ export function RegisterForm() {
           <p
             id="register-password-error"
             role="alert"
-            className="text-xs text-danger"
+            className="text-danger text-xs"
           >
             {errors.password.message}
           </p>

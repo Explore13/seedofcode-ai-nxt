@@ -36,7 +36,7 @@ export default function VerifyPage() {
       setInitialSent(true);
       handleSendOtp(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, user?.verified]);
 
   // Countdown timer
@@ -66,7 +66,7 @@ export default function VerifyPage() {
     try {
       await authApi.verifyOtp({ otp: code });
       if (user) setUser({ ...user, verified: true });
-      toast.success("Email verified! Welcome to SeedofCode AI.");
+      toast.success('Email verified! Welcome to SeedofCode AI.');
       router.replace('/home');
     } catch {
       toast.error('Incorrect or expired code. Please try again.');
@@ -80,22 +80,25 @@ export default function VerifyPage() {
     <div className="w-full max-w-sm space-y-8">
       {/* Logo + heading */}
       <div className="flex flex-col items-center gap-3 text-center">
-        <span className="flex items-center justify-center rounded-card bg-primary/10 p-4">
-          <Mail className="h-8 w-8 text-primary dark:text-chlorophyll" />
+        <span className="rounded-card bg-primary/10 flex items-center justify-center p-4">
+          <Mail className="text-primary dark:text-chlorophyll h-8 w-8" />
         </span>
         <div>
-          <h1 className="font-display text-2xl font-semibold text-foreground">
+          <h1 className="font-display text-foreground text-2xl font-semibold">
             Check your inbox
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             We sent a 6-digit code to{' '}
-            <strong className="text-foreground">{user?.email ?? 'your email'}</strong>.
+            <strong className="text-foreground">
+              {user?.email ?? 'your email'}
+            </strong>
+            .
           </p>
         </div>
       </div>
 
       {/* Card */}
-      <div className="rounded-card border border-border bg-surface p-6 shadow-sm">
+      <div className="rounded-card border-border bg-surface border p-6 shadow-sm">
         <div className="flex flex-col items-center gap-6">
           {/* OTP input */}
           <OtpInput
@@ -122,7 +125,7 @@ export default function VerifyPage() {
           </Button>
 
           {/* Resend */}
-          <div className="text-center text-sm text-muted-foreground">
+          <div className="text-muted-foreground text-center text-sm">
             Didn&apos;t receive a code?{' '}
             {cooldown > 0 ? (
               <span className="text-subtle-foreground">
@@ -133,7 +136,7 @@ export default function VerifyPage() {
                 type="button"
                 onClick={() => handleSendOtp(false)}
                 disabled={sending}
-                className="inline-flex items-center gap-1 text-primary underline-offset-4 hover:underline disabled:opacity-50 dark:text-chlorophyll"
+                className="text-primary dark:text-chlorophyll inline-flex items-center gap-1 underline-offset-4 hover:underline disabled:opacity-50"
               >
                 {sending ? (
                   <Loader2 className="h-3 w-3 animate-spin" />
@@ -151,7 +154,7 @@ export default function VerifyPage() {
       <div className="text-center">
         <Link
           href="/login"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-sm underline-offset-4 hover:underline"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
           Back to sign in

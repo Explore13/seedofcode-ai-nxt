@@ -11,17 +11,17 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <div className="p-8 max-w-6xl mx-auto space-y-8">
+    <div className="mx-auto max-w-6xl space-y-8 p-8">
       <div>
         <h1 className="font-display text-display-sm text-foreground font-semibold tracking-tight">
           Overview
         </h1>
-        <p className="mt-2 text-muted-foreground">
+        <p className="text-muted-foreground mt-2">
           Welcome back. Here&apos;s a summary of your usage today.
         </p>
       </div>
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         <WalletBalanceCard />
         <TodayStatsRow />
         <ActiveKeysCard />

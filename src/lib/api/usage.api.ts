@@ -20,7 +20,8 @@ export const usageApi = {
     const params: Record<string, any> = {};
     if (query.page != null) params.page = query.page;
     if (query.limit != null) params.limit = query.limit;
-    if (query.models && query.models.length > 0) params.models = query.models.join(',');
+    if (query.models && query.models.length > 0)
+      params.models = query.models.join(',');
     return apiClient
       .get<ApiEnvelope<UsageLog[]>>('/usage', { params })
       .then(page<UsageLog>);

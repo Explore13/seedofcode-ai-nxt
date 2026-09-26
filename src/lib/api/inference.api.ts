@@ -94,14 +94,16 @@ export async function streamChat(
 /**
  * Execute a non-streaming chat request, meant for the playground.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function testChat(apiKey: string, payload: any): Promise<Response> {
+export async function testChat(
+  apiKey: string,
+  payload: Record<string, unknown>,
+): Promise<Response> {
   return fetch(`${env.apiBaseUrl}/chat`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
+      Authorization: `Bearer ${apiKey}`,
     },
-    body: JSON.stringify(payload)
+    body: JSON.stringify(payload),
   });
 }

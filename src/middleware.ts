@@ -29,10 +29,7 @@ export function middleware(request: NextRequest): NextResponse {
 
   // Logged-in users visiting /login or /register → send to /home.
   // (/verify is excluded: unverified users are still allowed there.)
-  if (
-    isAuthed &&
-    (pathname === '/login' || pathname === '/register')
-  ) {
+  if (isAuthed && (pathname === '/login' || pathname === '/register')) {
     return NextResponse.redirect(new URL('/home', request.url));
   }
 
@@ -41,9 +38,7 @@ export function middleware(request: NextRequest): NextResponse {
   // gives a faster, no-flash redirect for the common case.
   if (!isAuthed && isAppRoute(pathname)) {
     const next = encodeURIComponent(pathname + request.nextUrl.search);
-    return NextResponse.redirect(
-      new URL(`/login?next=${next}`, request.url),
-    );
+    return NextResponse.redirect(new URL(`/login?next=${next}`, request.url));
   }
 
   return NextResponse.next();

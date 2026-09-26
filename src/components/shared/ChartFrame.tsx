@@ -25,19 +25,19 @@ export function ChartFrame({
   return (
     <div
       className={cn(
-        'flex flex-col rounded-card border bg-surface p-6',
-        className
+        'rounded-card bg-surface flex flex-col border p-6',
+        className,
       )}
     >
       {(title || description) && (
         <div className="mb-6 flex flex-col gap-1">
-          {title && <h3 className="font-medium text-foreground">{title}</h3>}
+          {title && <h3 className="text-foreground font-medium">{title}</h3>}
           {description && (
-            <p className="text-sm text-subtle-foreground">{description}</p>
+            <p className="text-subtle-foreground text-sm">{description}</p>
           )}
         </div>
       )}
-      <div className="flex-1 min-h-[250px] w-full">
+      <div className="min-h-[250px] w-full flex-1">
         {loading ? (
           <Skeleton className="h-full w-full rounded-md" />
         ) : empty ? (
@@ -45,7 +45,7 @@ export function ChartFrame({
             icon={<BarChart3 className="h-8 w-8" />}
             title="No data"
             description={emptyMessage}
-            className="h-full border-none bg-surface-2/50"
+            className="bg-surface-2/50 h-full border-none"
           />
         ) : (
           children

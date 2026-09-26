@@ -37,19 +37,19 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border bg-background">
+    <footer className="border-border bg-background border-t">
       <div className="mx-auto max-w-5xl px-6 py-16">
         {/* Top row */}
         <div className="grid gap-12 sm:grid-cols-[1fr_auto_auto_auto]">
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Leaf className="h-5 w-5 text-chlorophyll" />
-              <span className="font-display text-sm font-semibold text-foreground">
-              SeedofCode AI
+              <Leaf className="text-chlorophyll h-5 w-5" />
+              <span className="font-display text-foreground text-sm font-semibold">
+                SeedofCode AI
               </span>
             </div>
-            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <p className="text-muted-foreground max-w-xs text-sm leading-relaxed">
               An OpenAI-compatible LLM inference API backed by an Ollama fleet.
               Pay per token, no subscriptions.
             </p>
@@ -58,7 +58,7 @@ export function Footer() {
           {/* Link columns */}
           {FOOTER_COLS.map((col) => (
             <div key={col.heading} className="space-y-4">
-              <h3 className="text-xs font-semibold tracking-wide text-foreground">
+              <h3 className="text-foreground text-xs font-semibold tracking-wide">
                 {col.heading}
               </h3>
               <ul className="space-y-2.5">
@@ -69,7 +69,7 @@ export function Footer() {
                       {...('external' in link && link.external
                         ? { target: '_blank', rel: 'noopener noreferrer' }
                         : {})}
-                      className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                      className="text-muted-foreground hover:text-foreground text-sm underline-offset-4 transition-colors hover:underline"
                     >
                       {link.label}
                     </Link>
@@ -81,11 +81,11 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-8">
-          <p className="text-xs text-subtle-foreground">
+        <div className="border-border mt-16 flex flex-wrap items-center justify-between gap-4 border-t pt-8">
+          <p className="text-subtle-foreground text-xs">
             © {year} SeedofCode AI. All rights reserved.
           </p>
-          <p className="text-xs text-subtle-foreground">
+          <p className="text-subtle-foreground text-xs">
             Built on Ollama · OpenAI-compatible API
           </p>
         </div>

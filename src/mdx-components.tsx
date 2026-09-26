@@ -10,17 +10,38 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     CodeTabs,
     ApiTester,
     h1: ({ children, id, className, ...props }) => (
-      <h1 id={id} className={cn("mt-2 scroll-m-20 font-display text-4xl font-bold tracking-tight text-foreground", className)} {...props}>
+      <h1
+        id={id}
+        className={cn(
+          'font-display text-foreground mt-2 scroll-m-20 text-4xl font-bold tracking-tight',
+          className,
+        )}
+        {...props}
+      >
         {children}
       </h1>
     ),
     h2: ({ children, id, className, ...props }) => (
-      <h2 id={id} className={cn("mt-12 scroll-m-20 border-b border-border pb-2 font-display text-2xl font-semibold tracking-tight text-foreground first:mt-0", className)} {...props}>
+      <h2
+        id={id}
+        className={cn(
+          'border-border font-display text-foreground mt-12 scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0',
+          className,
+        )}
+        {...props}
+      >
         {children}
       </h2>
     ),
     h3: ({ children, id, className, ...props }) => (
-      <h3 id={id} className={cn("mt-8 scroll-m-20 font-display text-xl font-semibold tracking-tight text-foreground", className)} {...props}>
+      <h3
+        id={id}
+        className={cn(
+          'font-display text-foreground mt-8 scroll-m-20 text-xl font-semibold tracking-tight',
+          className,
+        )}
+        {...props}
+      >
         {children}
       </h3>
     ),
@@ -28,43 +49,98 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       const isInternal = href?.startsWith('/');
       if (isInternal) {
         return (
-          <Link href={href} className={cn("font-medium text-primary underline underline-offset-4 dark:text-chlorophyll", className)} {...props}>
+          <Link
+            href={href}
+            className={cn(
+              'text-primary dark:text-chlorophyll font-medium underline underline-offset-4',
+              className,
+            )}
+            {...props}
+          >
             {children}
           </Link>
         );
       }
       return (
-        <a href={href} target="_blank" rel="noreferrer" className={cn("font-medium text-primary underline underline-offset-4 dark:text-chlorophyll", className)} {...props}>
+        <a
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          className={cn(
+            'text-primary dark:text-chlorophyll font-medium underline underline-offset-4',
+            className,
+          )}
+          {...props}
+        >
           {children}
         </a>
       );
     },
     p: ({ className, ...props }) => (
-      <p className={cn("leading-7 [&:not(:first-child)]:mt-6 text-muted-foreground", className)} {...props} />
+      <p
+        className={cn(
+          'text-muted-foreground leading-7 [&:not(:first-child)]:mt-6',
+          className,
+        )}
+        {...props}
+      />
     ),
     ul: ({ className, ...props }) => (
-      <ul className={cn("my-6 ml-6 list-disc [&>li]:mt-2 text-muted-foreground", className)} {...props} />
+      <ul
+        className={cn(
+          'text-muted-foreground my-6 ml-6 list-disc [&>li]:mt-2',
+          className,
+        )}
+        {...props}
+      />
     ),
     ol: ({ className, ...props }) => (
-      <ol className={cn("my-6 ml-6 list-decimal [&>li]:mt-2 text-muted-foreground", className)} {...props} />
+      <ol
+        className={cn(
+          'text-muted-foreground my-6 ml-6 list-decimal [&>li]:mt-2',
+          className,
+        )}
+        {...props}
+      />
     ),
     li: ({ className, ...props }) => (
-      <li className={cn("mt-2", className)} {...props} />
+      <li className={cn('mt-2', className)} {...props} />
     ),
     blockquote: ({ className, ...props }) => (
-      <blockquote className={cn("mt-6 border-l-2 border-chlorophyll pl-6 italic text-muted-foreground bg-surface-2/50 py-2 rounded-r-control", className)} {...props} />
+      <blockquote
+        className={cn(
+          'border-chlorophyll text-muted-foreground bg-surface-2/50 rounded-r-control mt-6 border-l-2 py-2 pl-6 italic',
+          className,
+        )}
+        {...props}
+      />
     ),
-    hr: ({ ...props }) => <hr className="my-8 border-border" {...props} />,
+    hr: ({ ...props }) => <hr className="border-border my-8" {...props} />,
     table: ({ className, ...props }) => (
-      <div className="my-6 w-full overflow-y-auto rounded-card border border-border">
-        <table className={cn("w-full border-collapse text-sm text-left", className)} {...props} />
+      <div className="rounded-card border-border my-6 w-full overflow-y-auto border">
+        <table
+          className={cn('w-full border-collapse text-left text-sm', className)}
+          {...props}
+        />
       </div>
     ),
     th: ({ className, ...props }) => (
-      <th className={cn("border-b border-border py-4 px-4 font-semibold text-foreground bg-surface-2", className)} {...props} />
+      <th
+        className={cn(
+          'border-border text-foreground bg-surface-2 border-b px-4 py-4 font-semibold',
+          className,
+        )}
+        {...props}
+      />
     ),
     td: ({ className, ...props }) => (
-      <td className={cn("border-b border-border py-4 px-4 text-muted-foreground", className)} {...props} />
+      <td
+        className={cn(
+          'border-border text-muted-foreground border-b px-4 py-4',
+          className,
+        )}
+        {...props}
+      />
     ),
     pre: ({ children, ..._props }) => {
       let codeString = '';
@@ -78,7 +154,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         } else if (Array.isArray(childProps.children)) {
           codeString = childProps.children.join('').trim();
         }
-        
+
         if (childProps.className && typeof childProps.className === 'string') {
           language = childProps.className.replace('language-', '');
         }
@@ -86,10 +162,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
       return (
         <div className="not-prose my-6">
-          <CodeBlock 
-            code={codeString} 
-            language={language}
-          />
+          <CodeBlock code={codeString} language={language} />
         </div>
       );
     },
@@ -97,13 +170,23 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       // If code doesn't have a language class, it's inline code
       if (!className || !className.includes('language-')) {
         return (
-          <code className={cn("relative rounded bg-surface-2 px-[0.4rem] py-[0.2rem] font-mono text-[0.85rem] text-foreground border border-border/50", className)} {...props}>
+          <code
+            className={cn(
+              'bg-surface-2 text-foreground border-border/50 relative rounded border px-[0.4rem] py-[0.2rem] font-mono text-[0.85rem]',
+              className,
+            )}
+            {...props}
+          >
             {children}
           </code>
         );
       }
       // Fallback
-      return <code className={className} {...props}>{children}</code>;
+      return (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
     },
     ...components,
   };
