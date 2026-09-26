@@ -1,0 +1,80 @@
+name: SeedofCode AI CI/CD Pipeline
+
+# 1. TRIGGER: This tells GitHub Actions exactly when to run this file.
+# We only want it to run when someone pushes code to the 'main' or 'dev_surya' branches.
+on:
+  push:
+    branches:
+      - main
+      - dev_surya
+
+# 2. GLOBAL VARIABLES: Vercel CLI needs these to know which project to deploy to.
+# We pull them securely from GitHub Repository Secrets so they aren't exposed in the code.
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  Test-and-Deploy:
+    # We run this on a clean Ubuntu Linux server in the cloud
+    runs-on: ubuntu-latest
+
+    steps:
+      # 3. SETUP PHASE: Get the code and install the necessary tools (pnpm and Node.js)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20 # Using Node 20 (LTS) which matches Vercel's default environment
+          cache: pnpm
+
+      # 4. INSTALL & TEST PHASE: Prove the code is safe before deploying
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Run Code Review (Linting)
+        run: pnpm lint
+
+      - name: Run Typecheck (TypeScript)
+        run: pnpm typecheck
+
+      # We build the project locally first to ensure the Next.js build doesn't crash
+      - name: Build Test
+        run: pnpm build
+
+      # 5. DEPLOYMENT PREP: Install the Vercel CLI to talk to Vercel servers
+      - name: Install Vercel CLI
+        run: pnpm install --global vercel@latest
+
+      # If the branch is dev_surya, we deploy to a secret Preview URL.
+      - name: Pull Vercel Preview Environment
+        if: github.ref == 'refs/heads/dev_surya'
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Vercel Preview Project
+        if: github.ref == 'refs/heads/dev_surya'
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel Preview URL
+        if: github.ref == 'refs/heads/dev_surya'
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+
+      # If the branch is main, we MUST use the --prod flag to overwrite the live site.
+      - name: Pull Vercel Production Environment
+        if: github.ref == 'refs/heads/main'
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Vercel Production Project
+        if: github.ref == 'refs/heads/main'
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel Production URL
+        if: github.ref == 'refs/heads/main'
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
