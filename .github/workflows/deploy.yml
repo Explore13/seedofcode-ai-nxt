@@ -74,7 +74,9 @@ jobs:
       - name: Build Vercel Preview Project
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy to Vercel Preview URL
-        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        run: |
+          DEPLOYMENT_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          vercel alias set $DEPLOYMENT_URL seedofcode-ai-stg.vercel.app --token=${{ secrets.VERCEL_TOKEN }}
 
   # =========================================================================
   # 3. PRODUCTION PHASE (Runs ONLY for main)
