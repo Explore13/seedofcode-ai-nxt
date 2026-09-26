@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Play, Loader2, Terminal } from 'lucide-react';
 import Editor from '@monaco-editor/react';
 import { CodeBlock } from './CodeBlock';
+import { testChat } from '@/lib/api/inference.api';
 
 export function ApiTester() {
   const [apiKey, setApiKey] = useState('');
@@ -16,23 +17,20 @@ export function ApiTester() {
     }
   ]
 }`);
-  
+
   const [leftTab, setLeftTab] = useState<'headers' | 'body'>('body');
   const [activeLangTab, setActiveLangTab] = useState<'curl' | 'javascript' | 'python' | 'java'>('curl');
-  
+
   const [response, setResponse] = useState<string | null>(null);
   const [statusText, setStatusText] = useState<string | null>(null);
   const [statusCode, setStatusCode] = useState<number | null>(null);
   const [duration, setDuration] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const displayKey = apiKey || 'soc_live_your_api_key_here';
-  
+  const displayKey = apiKey || '';
+
   // Snippets always show production URL for copy/paste
-  const displayUrl = 'https://api.ai.seedofcode.dev/api/chat';
-  
-  // The actual execution uses the proxy in local dev, bypassing CORS
-  const fetchUrl = process.env.NEXT_PUBLIC_ENV === 'local' ? '/api/chat' : displayUrl;
+  const displayUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/chat`;
 
   const snippets = {
     curl: `curl -X POST ${displayUrl} \\
@@ -99,7 +97,7 @@ public class Main {
     setStatusText(null);
     setStatusCode(null);
     setDuration(null);
-    
+
     let parsedBody;
     try {
       parsedBody = JSON.parse(jsonPayload);
@@ -114,14 +112,7 @@ public class Main {
     const startTime = performance.now();
 
     try {
-      const res = await fetch(fetchUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey || 'soc_live_missing_key'}`
-        },
-        body: JSON.stringify(parsedBody)
-      });
+      const res = await testChat(apiKey || 'soc_live_missing_key', parsedBody);
 
       const endTime = performance.now();
       setDuration(Math.round(endTime - startTime));
@@ -135,9 +126,9 @@ public class Main {
       setDuration(Math.round(endTime - startTime));
       setStatusCode(0);
       setStatusText('Network Error');
-      setResponse(JSON.stringify({ 
+      setResponse(JSON.stringify({
         error: err.message || 'Failed to fetch',
-        tip: 'Check your network connection and server status.' 
+        tip: 'Check your network connection and server status.'
       }, null, 2));
     } finally {
       setIsLoading(false);
@@ -171,17 +162,15 @@ public class Main {
         <div className="flex items-center gap-1 border-b border-border/60 px-2 pt-2 bg-surface-2/30">
           <button
             onClick={() => setLeftTab('headers')}
-            className={`px-6 py-2.5 text-sm font-medium border-b-2 transition-colors ${
-              leftTab === 'headers' ? 'border-primary text-foreground bg-surface rounded-t-md' : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-surface/50 rounded-t-md'
-            }`}
+            className={`px-6 py-2.5 text-sm font-medium border-b-2 transition-colors ${leftTab === 'headers' ? 'border-primary text-foreground bg-surface rounded-t-md' : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-surface/50 rounded-t-md'
+              }`}
           >
             Headers
           </button>
           <button
             onClick={() => setLeftTab('body')}
-            className={`px-6 py-2.5 text-sm font-medium border-b-2 transition-colors ${
-              leftTab === 'body' ? 'border-primary text-foreground bg-surface rounded-t-md' : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-surface/50 rounded-t-md'
-            }`}
+            className={`px-6 py-2.5 text-sm font-medium border-b-2 transition-colors ${leftTab === 'body' ? 'border-primary text-foreground bg-surface rounded-t-md' : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-surface/50 rounded-t-md'
+              }`}
           >
             Body (JSON)
           </button>
@@ -240,20 +229,19 @@ public class Main {
             <button
               key={lang}
               onClick={() => setActiveLangTab(lang)}
-              className={`px-6 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                activeLangTab === lang
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-muted-foreground hover:text-foreground'
-              }`}
+              className={`px-6 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeLangTab === lang
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+                }`}
             >
               {lang === 'javascript' ? 'Axios (Node)' : lang === 'python' ? 'Python' : lang === 'java' ? 'Java' : 'cURL'}
             </button>
           ))}
         </div>
         <div className="overflow-y-auto bg-[#0d1117] p-4 min-h-[300px] max-h-[500px] custom-scrollbar">
-          <CodeBlock 
-            code={snippets[activeLangTab]} 
-            language={activeLangTab === 'curl' ? 'bash' : activeLangTab} 
+          <CodeBlock
+            code={snippets[activeLangTab]}
+            language={activeLangTab === 'curl' ? 'bash' : activeLangTab}
           />
         </div>
       </div>
@@ -271,11 +259,11 @@ public class Main {
             </div>
           )}
         </div>
-        
+
         <div className="overflow-y-auto min-h-[300px] max-h-[500px]">
           {response ? (
             <div className="p-4">
-               <CodeBlock code={response} language="json" />
+              <CodeBlock code={response} language="json" />
             </div>
           ) : (
             <div className="h-[300px] flex flex-col gap-3 items-center justify-center text-[#8b949e]">

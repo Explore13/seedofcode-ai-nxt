@@ -10,7 +10,7 @@ function required(value: string | undefined, name: string): string {
   if (!value || value.trim() === '') {
     throw new Error(
       `Missing required environment variable "${name}". ` +
-        'Copy .env.example to .env.local and set it.',
+      'Copy .env.example to .env.local and set it.',
     );
   }
   return value;
@@ -28,7 +28,4 @@ export const env = {
 
   /** Address shown in the "Coming soon" billing dialog and footer. */
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? 'hello@seedofcode.dev',
-
-  /** True when running the production build (not `next dev`). */
-  isProduction: process.env.NODE_ENV === 'production',
 } as const;
