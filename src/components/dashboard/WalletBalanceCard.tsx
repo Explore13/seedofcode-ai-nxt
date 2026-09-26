@@ -18,7 +18,7 @@ export function WalletBalanceCard() {
     <StatCard
       title="Available Credits"
       value={displayValue}
-      icon={<Coins className="h-6 w-6 text-chlorophyll" />}
+      icon={<Coins className="text-chlorophyll h-6 w-6" />}
       className="h-full"
     />
   );

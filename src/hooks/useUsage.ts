@@ -11,12 +11,19 @@ const MAX_PAGES = 50; // safety cap → at most 5,000 rows fetched
  * pages, or hit the safety cap. The backend has no date filter, so the range is
  * applied here by stopping early once rows get older than `earliest`.
  */
-async function fetchRowsSince(earliest: Date, models: string[] = []): Promise<UsageLog[]> {
+async function fetchRowsSince(
+  earliest: Date,
+  models: string[] = [],
+): Promise<UsageLog[]> {
   const rows: UsageLog[] = [];
   const boundary = earliest.getTime();
 
   for (let page = 1; page <= MAX_PAGES; page++) {
-    const { data, meta } = await usageApi.list({ page, limit: PAGE_LIMIT, models });
+    const { data, meta } = await usageApi.list({
+      page,
+      limit: PAGE_LIMIT,
+      models,
+    });
     rows.push(...data);
 
     const last = data[data.length - 1];
@@ -43,7 +50,13 @@ export function useUsage(from: Date, to: Date, models: string[] = []) {
   const prevFrom = new Date(from.getTime() - rangeMs);
 
   return useQuery({
-    queryKey: ['usage', 'range', from.toISOString(), to.toISOString(), models.join(',')],
+    queryKey: [
+      'usage',
+      'range',
+      from.toISOString(),
+      to.toISOString(),
+      models.join(','),
+    ],
     queryFn: () => fetchRowsSince(prevFrom, models),
   });
 }

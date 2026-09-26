@@ -30,11 +30,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useUsagePage } from '@/hooks/useUsagePage';
-import {
-  formatLatency,
-  formatNumber,
-  formatTimestamp,
-} from '@/lib/format';
+import { formatLatency, formatNumber, formatTimestamp } from '@/lib/format';
 import { isFailed } from '@/lib/usage/aggregate';
 import type { UsageLog } from '@/lib/types';
 import { modelPalette } from './chart-theme';
@@ -172,10 +168,11 @@ export function RequestHistoryTable() {
                 type="button"
                 aria-pressed={status === s.value}
                 onClick={() => setStatus(s.value)}
-                className={`rounded-[7px] px-2.5 py-1 text-xs font-medium transition-colors ${status === s.value
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
-                  }`}
+                className={`rounded-[7px] px-2.5 py-1 text-xs font-medium transition-colors ${
+                  status === s.value
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
               >
                 {s.label}
               </button>
@@ -310,7 +307,7 @@ export function RequestHistoryTable() {
                     </TableCell>
                     <TableCell className="text-right font-mono text-xs">
                       <span className="inline-flex items-center justify-end gap-1">
-                        <Coins className="h-3 w-3 text-chlorophyll" />
+                        <Coins className="text-chlorophyll h-3 w-3" />
                         {formatNumber(r.creditsCost)}
                       </span>
                     </TableCell>
@@ -375,13 +372,15 @@ export function RequestHistoryTable() {
             <>
               <SheetHeader>
                 <SheetTitle>Request Details</SheetTitle>
-                <SheetDescription className="font-mono text-xs text-muted-foreground">
+                <SheetDescription className="text-muted-foreground font-mono text-xs">
                   ID: {selected.id}
                 </SheetDescription>
               </SheetHeader>
               <div className="flex-1 space-y-6 overflow-y-auto px-4 pb-4">
                 <div className="space-y-3">
-                  <h4 className="text-sm font-medium text-foreground">General</h4>
+                  <h4 className="text-foreground text-sm font-medium">
+                    General
+                  </h4>
                   <DetailRow
                     label="Timestamp"
                     value={formatTimestamp(selected.createdAt)}
@@ -403,7 +402,7 @@ export function RequestHistoryTable() {
                 </div>
 
                 <div className="space-y-3">
-                  <h4 className="text-sm font-medium text-foreground">Usage</h4>
+                  <h4 className="text-foreground text-sm font-medium">Usage</h4>
                   <DetailRow
                     label="Prompt tokens"
                     value={formatNumber(selected.promptTokens)}
@@ -427,12 +426,14 @@ export function RequestHistoryTable() {
                 </div>
 
                 <div className="space-y-3">
-                  <h4 className="text-sm font-medium text-foreground">Billing</h4>
+                  <h4 className="text-foreground text-sm font-medium">
+                    Billing
+                  </h4>
                   <DetailRow
                     label="Credits Cost"
                     value={
                       <span className="inline-flex items-center gap-1">
-                        <Coins className="h-4 w-4 text-chlorophyll" />
+                        <Coins className="text-chlorophyll h-4 w-4" />
                         {formatNumber(selected.creditsCost)}
                       </span>
                     }
@@ -455,7 +456,7 @@ export function RequestHistoryTable() {
                   {selected.creditTransactions &&
                     selected.creditTransactions.length > 0 && (
                       <div>
-                        <h4 className="text-sm font-medium text-foreground mb-2">
+                        <h4 className="text-foreground mb-2 text-sm font-medium">
                           Credit transactions
                         </h4>
                         <ul className="space-y-1">

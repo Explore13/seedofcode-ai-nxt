@@ -45,8 +45,8 @@ export function Header({ sidebarCollapsed }: HeaderProps) {
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 z-20 flex h-14 items-center justify-between border-b border-border bg-surface px-4 transition-all duration-300 left-0',
-        sidebarCollapsed ? 'md:left-16' : 'md:left-[15rem]'
+        'border-border bg-surface fixed top-0 right-0 left-0 z-20 flex h-14 items-center justify-between border-b px-4 transition-all duration-300',
+        sidebarCollapsed ? 'md:left-16' : 'md:left-[15rem]',
       )}
     >
       {/* Mobile hamburger */}
@@ -55,9 +55,9 @@ export function Header({ sidebarCollapsed }: HeaderProps) {
       {/* Right-side controls */}
       <div className="ml-auto flex items-center gap-2">
         {user && (
-          <div className="mr-2 flex h-8 items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-sm font-medium text-foreground shadow-sm">
-            <Coins className="h-4 w-4 text-chlorophyll" />
-            {isWalletLoading ? '...' : wallet?.balance.toLocaleString() ?? 0}
+          <div className="border-border bg-surface text-foreground mr-2 flex h-8 items-center gap-1.5 rounded-full border px-3 text-sm font-medium shadow-sm">
+            <Coins className="text-chlorophyll h-4 w-4" />
+            {isWalletLoading ? '...' : (wallet?.balance.toLocaleString() ?? 0)}
           </div>
         )}
         <ThemeToggle />
@@ -66,7 +66,7 @@ export function Header({ sidebarCollapsed }: HeaderProps) {
         <DropdownMenu>
           <DropdownMenuTrigger
             aria-label="Open account menu"
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-primary transition-colors hover:bg-primary/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring dark:text-chlorophyll"
+            className="bg-primary/15 text-primary hover:bg-primary/25 focus-visible:ring-ring dark:text-chlorophyll flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:outline-none"
           >
             {initial}
           </DropdownMenuTrigger>
@@ -76,7 +76,7 @@ export function Header({ sidebarCollapsed }: HeaderProps) {
                 <div className="flex flex-col gap-0.5">
                   <p className="text-sm font-medium">{displayName}</p>
                   {user?.email && (
-                    <p className="truncate text-xs text-muted-foreground">
+                    <p className="text-muted-foreground truncate text-xs">
                       {user.email}
                     </p>
                   )}
@@ -97,7 +97,7 @@ export function Header({ sidebarCollapsed }: HeaderProps) {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={handleLogout}
-              className="cursor-pointer text-danger data-[variant=destructive]:focus:text-danger flex items-center gap-2"
+              className="text-danger data-[variant=destructive]:focus:text-danger flex cursor-pointer items-center gap-2"
             >
               <LogOut className="h-4 w-4" />
               Log out

@@ -17,9 +17,12 @@ const LINES = [
   { prefix: '  ', text: '-H "Content-Type: application/json" \\' },
   { prefix: '  ', text: '-d \'{"model":"qwen2.5vl:7b","messages":[' },
   { prefix: '  ', text: '     {"role":"user","content":"Plant a prompt."}' },
-  { prefix: '  ', text: '   ]}\'' },
+  { prefix: '  ', text: "   ]}'" },
   { prefix: '', text: '' },
-  { prefix: '# ', text: '→  {"message":{"role":"assistant","content":"Watch it grow into code."}}' },
+  {
+    prefix: '# ',
+    text: '→  {"message":{"role":"assistant","content":"Watch it grow into code."}}',
+  },
 ];
 
 const CHAR_DELAY_MS = 22; // ms per character
@@ -116,15 +119,15 @@ export function GerminationAnimation() {
 
   return (
     <div
-      className="relative overflow-hidden rounded-card border border-border bg-pine dark:bg-pine shadow-2xl"
+      className="rounded-card border-border bg-pine dark:bg-pine relative overflow-hidden border shadow-2xl"
       aria-label="Code example: curl request to SeedofCode AI API"
       role="img"
     >
       {/* Terminal title bar */}
       <div className="flex items-center gap-1.5 border-b border-[#24382c] bg-[#0a140f] px-4 py-3">
         <span className="h-3 w-3 rounded-full bg-[#c0432f]/80" />
-        <span className="h-3 w-3 rounded-full bg-harvest/60" />
-        <span className="h-3 w-3 rounded-full bg-chlorophyll/60" />
+        <span className="bg-harvest/60 h-3 w-3 rounded-full" />
+        <span className="bg-chlorophyll/60 h-3 w-3 rounded-full" />
         <span className="ml-3 font-mono text-xs text-[#8aa394]">
           api.ai.seedofcode.dev
         </span>
@@ -138,7 +141,7 @@ export function GerminationAnimation() {
           const isPrompt = line.startsWith('$ ');
 
           return (
-            <div key={i} className="whitespace-pre-wrap break-all">
+            <div key={i} className="break-all whitespace-pre-wrap">
               <span
                 className={
                   isComment
@@ -152,8 +155,9 @@ export function GerminationAnimation() {
               </span>
               {isLastLine && !done && (
                 <span
-                  className={`inline-block h-[1em] w-[0.55em] translate-y-[1px] bg-chlorophyll ${cursorVisible ? 'opacity-100' : 'opacity-0'
-                    } transition-opacity`}
+                  className={`bg-chlorophyll inline-block h-[1em] w-[0.55em] translate-y-[1px] ${
+                    cursorVisible ? 'opacity-100' : 'opacity-0'
+                  } transition-opacity`}
                 />
               )}
             </div>

@@ -36,7 +36,10 @@ export function OtpInput({
 
   // Focus the first empty cell (or the last if full)
   useEffect(() => {
-    const idx = Math.min(digits.findIndex((d) => d === ''), length - 1);
+    const idx = Math.min(
+      digits.findIndex((d) => d === ''),
+      length - 1,
+    );
     refs.current[Math.max(0, idx)]?.focus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -127,8 +130,8 @@ export function OtpInput({
           onPaste={handlePaste}
           onFocus={(e) => e.target.select()}
           className={cn(
-            'h-12 w-11 rounded-control border border-border bg-surface text-center font-mono text-xl font-semibold text-foreground',
-            'transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/50',
+            'rounded-control border-border bg-surface text-foreground h-12 w-11 border text-center font-mono text-xl font-semibold',
+            'focus:border-primary focus:ring-ring/50 transition-colors focus:ring-2 focus:outline-none',
             'disabled:cursor-not-allowed disabled:opacity-50',
             digits[idx] && 'border-primary/60',
           )}

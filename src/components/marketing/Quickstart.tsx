@@ -6,7 +6,7 @@ const STEPS = [
     number: '01',
     title: 'Get an API key',
     description:
-      'Create a free account, then generate a key from the dashboard. Keys are prefixed soc_live_ so they\'re easy to spot in your code.',
+      "Create a free account, then generate a key from the dashboard. Keys are prefixed soc_live_ so they're easy to spot in your code.",
     code: `# From the dashboard → API Keys → Create key
 # Copy the key — you only see it once`,
     lang: 'bash',
@@ -51,23 +51,25 @@ function QuickstartStep({ step, isLast }: StepProps) {
     <div className="relative grid gap-6 md:grid-cols-[auto_1fr]">
       {/* Number + connector line */}
       <div className="flex flex-col items-center gap-2">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-chlorophyll bg-chlorophyll/10 font-mono text-sm font-bold text-chlorophyll">
+        <div className="border-chlorophyll bg-chlorophyll/10 text-chlorophyll flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 font-mono text-sm font-bold">
           {step.number}
         </div>
         {!isLast && (
-          <div className="w-px flex-1 bg-gradient-to-b from-chlorophyll/40 to-transparent" />
+          <div className="from-chlorophyll/40 w-px flex-1 bg-gradient-to-b to-transparent" />
         )}
       </div>
 
       {/* Content */}
       <div className={cn('space-y-4', !isLast && 'pb-12')}>
         <div>
-          <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
-          <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+          <h3 className="text-foreground text-lg font-semibold">
+            {step.title}
+          </h3>
+          <p className="text-muted-foreground mt-1 text-sm leading-relaxed">
             {step.description}
           </p>
         </div>
-        <div className="relative overflow-hidden rounded-card">
+        <div className="rounded-card relative overflow-hidden">
           <CodeBlock code={step.code} language={step.lang} />
         </div>
       </div>
@@ -83,18 +85,18 @@ export function Quickstart() {
       className="mx-auto max-w-3xl px-6 py-20"
     >
       <div className="mb-12 text-center">
-        <p className="mb-3 font-mono text-xs font-medium tracking-widest text-chlorophyll uppercase">
+        <p className="text-chlorophyll mb-3 font-mono text-xs font-medium tracking-widest uppercase">
           Quickstart
         </p>
         <h2
           id="quickstart-heading"
-          className="font-display text-display-sm font-semibold tracking-tight text-foreground"
+          className="font-display text-display-sm text-foreground font-semibold tracking-tight"
         >
           From zero to inference
           <br />
           in three steps.
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground">
+        <p className="text-muted-foreground mx-auto mt-4 max-w-xl text-base">
           If you already use the OpenAI SDK, you&apos;re 90% done. Change two
           lines, keep the rest.
         </p>

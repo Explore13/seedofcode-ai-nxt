@@ -21,7 +21,7 @@ export function Markdown({ content }: MarkdownProps) {
   const safeContent = preprocessMarkdown(content);
 
   return (
-    <div className="prose prose-sm dark:prose-invert max-w-none break-words leading-relaxed">
+    <div className="prose prose-sm dark:prose-invert max-w-none leading-relaxed break-words">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{

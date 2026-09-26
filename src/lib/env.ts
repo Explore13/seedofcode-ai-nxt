@@ -28,7 +28,4 @@ export const env = {
 
   /** Address shown in the "Coming soon" billing dialog and footer. */
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? 'hello@seedofcode.dev',
-
-  /** True when running the production build (not `next dev`). */
-  isProduction: process.env.NODE_ENV === 'production',
 } as const;

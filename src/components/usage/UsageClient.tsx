@@ -8,10 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { useUsage } from '@/hooks/useUsage';
 import { useUsageFilters } from '@/hooks/useUsageFilters';
-import {
-  bucketByDay,
-  filterByRange,
-} from '@/lib/usage/aggregate';
+import { bucketByDay, filterByRange } from '@/lib/usage/aggregate';
 import { UsageFilters } from './UsageFilters';
 import { UsageSummaryCards } from './UsageSummaryCards';
 import { RequestHistoryTable } from './RequestHistoryTable';
@@ -46,7 +43,7 @@ export function UsageClient() {
   const all = useMemo(() => data ?? [], [data]);
   const availableModels = useMemo(
     () => systemModels?.map((m) => m.name).sort() ?? [],
-    [systemModels]
+    [systemModels],
   );
 
   const { currentRows, previousRows, daily } = useMemo(() => {

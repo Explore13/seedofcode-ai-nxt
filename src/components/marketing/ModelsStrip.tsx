@@ -1,9 +1,5 @@
 import type { ModelInfo } from '@/lib/types';
-import {
-  STATIC_MODELS,
-  familyColour,
-  modelDisplayName,
-} from './models-data';
+import { STATIC_MODELS, familyColour, modelDisplayName } from './models-data';
 import { cn } from '@/lib/cn';
 
 interface ModelBadgeProps {
@@ -19,7 +15,7 @@ function ModelBadge({ name, family, parameterSize }: ModelBadgeProps) {
   return (
     <div
       className={cn(
-        'inline-flex shrink-0 items-center gap-2 rounded-control border px-3 py-1.5 text-sm',
+        'rounded-control inline-flex shrink-0 items-center gap-2 border px-3 py-1.5 text-sm',
         colour,
       )}
     >
@@ -59,11 +55,11 @@ export function ModelsStrip({ models }: ModelsStripProps) {
   return (
     <section
       aria-label="Available models"
-      className="relative overflow-hidden border-y border-border py-6"
+      className="border-border relative overflow-hidden border-y py-6"
     >
       {/* Fade edges */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-background to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-background to-transparent" />
+      <div className="from-background pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r to-transparent" />
+      <div className="from-background pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l to-transparent" />
 
       {/* Scrolling track */}
       <div

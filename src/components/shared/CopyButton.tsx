@@ -28,8 +28,8 @@ export function CopyButton({ value, className, ...props }: CopyButtonProps) {
       variant="ghost"
       size="icon"
       className={cn(
-        'h-8 w-8 text-muted-foreground hover:text-foreground transition-colors',
-        className
+        'text-muted-foreground hover:text-foreground h-8 w-8 transition-colors',
+        className,
       )}
       onClick={handleCopy}
       aria-label="Copy to clipboard"
@@ -37,7 +37,7 @@ export function CopyButton({ value, className, ...props }: CopyButtonProps) {
       {...props}
     >
       {copied ? (
-        <Check className="h-4 w-4 text-success" />
+        <Check className="text-success h-4 w-4" />
       ) : (
         <Copy className="h-4 w-4" />
       )}

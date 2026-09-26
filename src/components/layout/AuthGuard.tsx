@@ -77,18 +77,21 @@ function AuthSkeleton() {
   return (
     <div className="flex min-h-dvh animate-pulse flex-col">
       {/* Sidebar stub */}
-      <div className="fixed inset-y-0 left-0 w-60 border-r border-border bg-surface" />
+      <div className="border-border bg-surface fixed inset-y-0 left-0 w-60 border-r" />
       {/* Header stub */}
-      <div className="fixed right-0 left-60 top-0 h-14 border-b border-border bg-surface" />
+      <div className="border-border bg-surface fixed top-0 right-0 left-60 h-14 border-b" />
       {/* Content area */}
-      <div className="ml-60 mt-14 flex flex-col gap-6 p-8">
-        <div className="h-8 w-48 rounded-control bg-border" />
+      <div className="mt-14 ml-60 flex flex-col gap-6 p-8">
+        <div className="rounded-control bg-border h-8 w-48" />
         <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-28 rounded-card bg-surface border border-border" />
+            <div
+              key={i}
+              className="rounded-card bg-surface border-border h-28 border"
+            />
           ))}
         </div>
-        <div className="h-64 rounded-card bg-surface border border-border" />
+        <div className="rounded-card bg-surface border-border h-64 border" />
       </div>
     </div>
   );

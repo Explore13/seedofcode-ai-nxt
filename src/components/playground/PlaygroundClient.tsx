@@ -36,13 +36,13 @@ import { Send, Sparkles, Square, Settings, Zap } from 'lucide-react';
 
 function ThinkingIndicator() {
   const phrases = [
-    "Synthesizing...",
-    "Let him cook...",
-    "Vibing with the prompt...",
-    "Doing the math...",
-    "Cooking up some tokens...",
+    'Synthesizing...',
+    'Let him cook...',
+    'Vibing with the prompt...',
+    'Doing the math...',
+    'Cooking up some tokens...',
     "Hold up, I'm cooking...",
-    "Gathering the lore..."
+    'Gathering the lore...',
   ];
   const [index, setIndex] = useState(0);
 
@@ -56,10 +56,10 @@ function ThinkingIndicator() {
   return (
     <div className="flex w-fit items-center gap-2 py-1.5">
       <div className="relative flex h-3.5 w-3.5 items-center justify-center">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60 opacity-75"></span>
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
+        <span className="bg-primary/60 absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"></span>
+        <span className="bg-primary relative inline-flex h-2 w-2 rounded-full"></span>
       </div>
-      <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-xs font-semibold tracking-wide text-transparent animate-pulse transition-all duration-300">
+      <span className="from-primary to-primary/60 animate-pulse bg-gradient-to-r bg-clip-text text-xs font-semibold tracking-wide text-transparent transition-all duration-300">
         {phrases[index]}
       </span>
     </div>
@@ -157,13 +157,13 @@ export function PlaygroundClient() {
 
                   next[next.length - 1] = {
                     ...last,
-                    stats: { tokens, durationMs }
+                    stats: { tokens, durationMs },
                   };
                 }
                 return next;
               });
             }
-          }
+          },
         },
       );
     } catch (err) {
@@ -236,7 +236,7 @@ export function PlaygroundClient() {
           <DropdownMenu>
             <DropdownMenuTrigger
               aria-label="Playground settings"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md border border-input bg-transparent hover:bg-surface-2 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="border-input hover:bg-surface-2 hover:text-foreground focus-visible:ring-ring flex h-10 w-10 shrink-0 items-center justify-center rounded-md border bg-transparent focus-visible:ring-2 focus-visible:outline-none"
             >
               <Settings className="h-4 w-4" />
             </DropdownMenuTrigger>
@@ -274,7 +274,7 @@ export function PlaygroundClient() {
             disabled={streaming}
             className="bg-surface dark:bg-surface-2 dark:border-border dark:text-foreground mt-2 resize-none"
           />
-          <div className="flex justify-end mt-4">
+          <div className="mt-4 flex justify-end">
             <Button onClick={() => setSystemPromptOpen(false)}>Save</Button>
           </div>
         </DialogContent>
@@ -285,12 +285,17 @@ export function PlaygroundClient() {
           <DialogHeader>
             <DialogTitle>Clear Chat</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this entire conversation? This action cannot be undone.
+              Are you sure you want to delete this entire conversation? This
+              action cannot be undone.
             </DialogDescription>
           </DialogHeader>
-          <div className="flex justify-end gap-2 mt-4">
-            <Button variant="outline" onClick={() => setClearDialogOpen(false)}>Cancel</Button>
-            <Button variant="destructive" onClick={clear}>Clear</Button>
+          <div className="mt-4 flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setClearDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={clear}>
+              Clear
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -318,7 +323,7 @@ export function PlaygroundClient() {
             >
               <div
                 className={cn(
-                  'rounded-control max-w-[85%] text-sm px-3 py-2',
+                  'rounded-control max-w-[85%] px-3 py-2 text-sm',
                   m.role === 'user'
                     ? 'bg-primary text-primary-foreground whitespace-pre-wrap'
                     : 'text-foreground px-0',
@@ -330,8 +335,8 @@ export function PlaygroundClient() {
                   <>
                     <Markdown content={m.content} />
                     {m.stats && (
-                      <div className="mt-2 flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground/80 pt-2 border-t border-border/50">
-                        <Zap className="h-3 w-3 text-primary/70" />
+                      <div className="text-muted-foreground/80 border-border/50 mt-2 flex items-center gap-1.5 border-t pt-2 text-[11px] font-medium">
+                        <Zap className="text-primary/70 h-3 w-3" />
                         Cooked for {(m.stats.durationMs! / 1000).toFixed(1)}s
                         {m.stats.tokens && ` · ${m.stats.tokens} tokens spent`}
                       </div>

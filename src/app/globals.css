@@ -1,7 +1,7 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@plugin "@tailwindcss/typography";
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@plugin '@tailwindcss/typography';
 
 /*
  * ─────────────────────────────────────────────────────────────────────────────
@@ -345,6 +345,10 @@
 
 /* 6 ── Marketing animations ─────────────────────────────────────────────── */
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }

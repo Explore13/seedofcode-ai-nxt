@@ -71,10 +71,10 @@ export function VerifyEmailBanner() {
       {/* Sticky banner */}
       <div
         role="alert"
-        className="flex items-center justify-between gap-4 border-b border-warning/30 bg-warning/10 px-4 py-2.5 text-sm"
+        className="border-warning/30 bg-warning/10 flex items-center justify-between gap-4 border-b px-4 py-2.5 text-sm"
       >
         <div className="flex items-center gap-2">
-          <AlertCircle className="h-4 w-4 shrink-0 text-warning" />
+          <AlertCircle className="text-warning h-4 w-4 shrink-0" />
           <span className="text-foreground">
             📧 Verify your email to unlock all features.
           </span>
@@ -83,7 +83,7 @@ export function VerifyEmailBanner() {
           <Button
             size="sm"
             variant="outline"
-            className="h-7 border-warning/40 text-xs hover:bg-warning/10"
+            className="border-warning/40 hover:bg-warning/10 h-7 text-xs"
             onClick={handleSendCode}
             disabled={step === 'sending'}
           >
@@ -92,7 +92,7 @@ export function VerifyEmailBanner() {
           <button
             aria-label="Dismiss banner"
             onClick={() => setDismissed(true)}
-            className="rounded-chip p-1 text-muted-foreground transition-colors hover:bg-surface-2"
+            className="rounded-chip text-muted-foreground hover:bg-surface-2 p-1 transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -113,7 +113,7 @@ export function VerifyEmailBanner() {
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Mail className="h-5 w-5 text-primary dark:text-chlorophyll" />
+              <Mail className="text-primary dark:text-chlorophyll h-5 w-5" />
               Enter verification code
             </DialogTitle>
             <DialogDescription>
@@ -136,7 +136,7 @@ export function VerifyEmailBanner() {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') handleVerifyOtp();
               }}
-              className="font-mono text-center text-xl tracking-widest"
+              className="text-center font-mono text-xl tracking-widest"
               autoFocus
               autoComplete="one-time-code"
             />

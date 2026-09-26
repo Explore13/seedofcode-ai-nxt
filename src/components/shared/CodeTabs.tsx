@@ -24,12 +24,12 @@ export function CodeTabs({ items, defaultValue }: CodeTabsProps) {
 
   return (
     <div className="my-6">
-      <div className="mb-3 flex items-center gap-2 overflow-x-auto no-scrollbar">
+      <div className="no-scrollbar mb-3 flex items-center gap-2 overflow-x-auto">
         {items.map((item) => (
           <button
             key={item.label}
             onClick={() => setActiveTab(item.label)}
-            className={`px-3 py-1 text-xs font-medium rounded-md transition-colors whitespace-nowrap ${
+            className={`rounded-md px-3 py-1 text-xs font-medium whitespace-nowrap transition-colors ${
               activeTab === item.label
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
@@ -39,10 +39,13 @@ export function CodeTabs({ items, defaultValue }: CodeTabsProps) {
           </button>
         ))}
       </div>
-      
+
       <div className="mt-4">
-        <CodeBlock code={activeItem.code.trim()} language={activeItem.language} />
+        <CodeBlock
+          code={activeItem.code.trim()}
+          language={activeItem.language}
+        />
       </div>
-    </div >
+    </div>
   );
 }

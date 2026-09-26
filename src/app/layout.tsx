@@ -38,6 +38,9 @@ export const metadata: Metadata = {
     'Plant a prompt. Watch it grow into code. An OpenAI-compatible LLM ' +
     'inference API with API keys, usage analytics, and pay-per-token pricing.',
   applicationName: 'SeedofCode AI',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export const viewport: Viewport = {

@@ -51,9 +51,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <TooltipProvider>
-          {children}
-        </TooltipProvider>
+        <TooltipProvider>{children}</TooltipProvider>
         <ToasterBridge />
       </ThemeProvider>
     </QueryClientProvider>

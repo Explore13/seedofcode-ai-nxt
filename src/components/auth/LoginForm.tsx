@@ -73,7 +73,7 @@ export function LoginForm() {
       <div className="space-y-1.5">
         <label
           htmlFor="login-email"
-          className="block text-sm font-medium text-foreground"
+          className="text-foreground block text-sm font-medium"
         >
           Email
         </label>
@@ -90,7 +90,7 @@ export function LoginForm() {
           <p
             id="login-email-error"
             role="alert"
-            className="text-xs text-danger"
+            className="text-danger text-xs"
           >
             {errors.email.message}
           </p>
@@ -101,7 +101,7 @@ export function LoginForm() {
       <div className="space-y-1.5">
         <label
           htmlFor="login-password"
-          className="block text-sm font-medium text-foreground"
+          className="text-foreground block text-sm font-medium"
         >
           Password
         </label>
@@ -122,7 +122,7 @@ export function LoginForm() {
             type="button"
             aria-label={showPassword ? 'Hide password' : 'Show password'}
             onClick={() => setShowPassword((s) => !s)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4" />
@@ -135,7 +135,7 @@ export function LoginForm() {
           <p
             id="login-password-error"
             role="alert"
-            className="text-xs text-danger"
+            className="text-danger text-xs"
           >
             {errors.password.message}
           </p>

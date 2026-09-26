@@ -2,11 +2,7 @@
 
 import { Line, LineChart, ResponsiveContainer } from 'recharts';
 import { StatCard, type TrendDirection } from '@/components/shared/StatCard';
-import {
-  formatLatency,
-  formatNumber,
-  formatTokens,
-} from '@/lib/format';
+import { formatLatency, formatNumber, formatTokens } from '@/lib/format';
 import {
   percentChange,
   summarize,
@@ -83,7 +79,7 @@ export function UsageSummaryCards({
     {
       title: 'Credits Spent',
       value: formatNumber(now.credits),
-      icon: <Coins className="h-6 w-6 text-chlorophyll" />,
+      icon: <Coins className="text-chlorophyll h-6 w-6" />,
       ...trend(now.credits, prev.credits),
       spark: daily.map((d) => ({ v: d.credits })),
     },
