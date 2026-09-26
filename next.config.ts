@@ -22,7 +22,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   async rewrites() {
-    if (!proxyTarget) {
+    // Only use proxy rewrites in local development!
+    if (!proxyTarget || process.env.NODE_ENV === 'production') {
       return [];
     }
     // Strip any trailing slash to avoid `//api` in the resolved URL.
