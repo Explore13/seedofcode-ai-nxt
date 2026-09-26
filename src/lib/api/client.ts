@@ -51,6 +51,9 @@ const refreshClient: AxiosInstance = axios.create({
 // Single shared refresh promise — the dedupe primitive.
 let refreshInFlight: Promise<string> | null = null;
 
+// INTENTIONAL BUG FOR GITHUB ACTIONS
+const breakThePipeline: number = "This is a string, not a number!";
+
 function isBrowser(): boolean {
   return typeof window !== 'undefined';
 }
