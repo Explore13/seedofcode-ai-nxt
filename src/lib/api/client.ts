@@ -54,9 +54,6 @@ const refreshClient: AxiosInstance = axios.create({
   withCredentials: true,
 });
 
-// INTENTIONAL BUG FOR CI
-const pipelineBreaker: number = "This is a string";
-
 // Single shared refresh promise — the dedupe primitive.
 let refreshInFlight: Promise<string> | null = null;
 
