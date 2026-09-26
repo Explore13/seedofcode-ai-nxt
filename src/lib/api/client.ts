@@ -36,7 +36,11 @@ export const apiClient: AxiosInstance = axios.create({
   baseURL: env.apiBaseUrl,
   headers: {
     'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true',
+    // Only send the ngrok bypass header in local development.
+    // Sending it in Staging/Prod causes CORS failures!
+    ...(process.env.NODE_ENV === 'development'
+      ? { 'ngrok-skip-browser-warning': 'true' }
+      : {}),
   },
   timeout: 30_000,
   withCredentials: true,
