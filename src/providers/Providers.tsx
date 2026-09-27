@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   QueryCache,
   QueryClient,
@@ -47,6 +47,14 @@ export function Providers({ children }: { children: React.ReactNode }) {
         },
       }),
   );
+
+  useEffect(() => {
+    console.log('Current Environment Info:', {
+      NODE_ENV: process.env.NODE_ENV,
+      VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV,
+      API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+    });
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
