@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next';
 import createMDX from '@next/mdx';
+import { withSentryConfig } from '@sentry/nextjs/config';
 
 /**
  * Dev-time API proxy.
@@ -37,8 +38,17 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withMDX = createMDX({
-  // Configure MDX options here if needed (e.g. remark/rehype plugins)
-});
+const withMDXConfig = createMDX({})(nextConfig);
 
-export default withMDX(nextConfig);
+export default withSentryConfig(withMDXConfig, {
+  org: 'explorer-rd',
+  project: 'seedofcode-ai-nxt',
+  // Pass the auth token
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  // Upload a larger set of source maps for prettier stack traces
+  widenClientFileUpload: true,
+  // Disable automatic source map upload in CI environments
+  silent: !process.env.CI,
+  // Use a fixed route (recommended)
+  tunnelRoute: '/sentry-tunnel',
+});
