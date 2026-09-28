@@ -49,6 +49,4 @@ export default withSentryConfig(withMDXConfig, {
   widenClientFileUpload: true,
   // Disable automatic source map upload in CI environments
   silent: !process.env.CI,
-  // Use a fixed route (recommended)
-  tunnelRoute: '/sentry-tunnel',
 });
