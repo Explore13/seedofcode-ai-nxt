@@ -6,6 +6,7 @@ import axios, {
 import { env } from '@/lib/env';
 import { useAuthStore } from '@/store/auth.store';
 import type { ApiEnvelope, AuthTokens } from '@/lib/types';
+import * as Sentry from '@sentry/nextjs';
 import { normalizeError } from './errors';
 
 /**
@@ -134,7 +135,27 @@ apiClient.interceptors.response.use(
       !shouldSkipRefresh(original.url);
 
     if (!canAttemptRefresh) {
-      return Promise.reject(normalizeError(error));
+      const normalized = normalizeError(error);
+
+      // Report API failures (5xx, network/CORS failures, or 4xx except benign 401s) to Sentry
+      if (
+        normalized.isNetworkError ||
+        (normalized.status && normalized.status >= 400 && normalized.status !== 401)
+      ) {
+        Sentry.captureException(normalized, {
+          tags: {
+            endpoint: original?.url,
+            method: original?.method?.toUpperCase(),
+            status_code: normalized.status ?? 'NETWORK_ERROR',
+          },
+          extra: {
+            requestUrl: original?.url,
+            responsePayload: normalized.payload,
+          },
+        });
+      }
+
+      return Promise.reject(normalized);
     }
 
     original._retried = true;

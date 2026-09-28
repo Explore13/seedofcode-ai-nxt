@@ -3,6 +3,7 @@ import { WalletBalanceCard } from '@/components/dashboard/WalletBalanceCard';
 import { TodayStatsRow } from '@/components/dashboard/TodayStatsRow';
 import { ActiveKeysCard } from '@/components/dashboard/ActiveKeysCard';
 import { QuickstartSnippet } from '@/components/dashboard/QuickstartSnippet';
+import { SentryTest } from '@/components/dashboard/SentryTest';
 
 export const metadata: Metadata = {
   title: 'Overview',
@@ -27,7 +28,8 @@ export default function HomePage() {
         <ActiveKeysCard />
       </div>
 
-      <div className="pt-4">
+      <div className="pt-4 space-y-8">
+        <SentryTest />
         <QuickstartSnippet />
       </div>
     </div>
