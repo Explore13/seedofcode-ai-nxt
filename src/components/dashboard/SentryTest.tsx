@@ -9,7 +9,9 @@ export function SentryTest() {
 
   // 1. TypeError: Accessing property on undefined (Most common JS bug)
   const handleUndefinedError = () => {
-    const user: any = null;
+    const user = null as unknown as {
+      profile: { settings: { theme: string } };
+    };
     // This will throw: Cannot read properties of null (reading 'profile')
     return user.profile.settings.theme;
   };
@@ -23,7 +25,11 @@ export function SentryTest() {
   const handleUnhandledRejection = () => {
     new Promise((_, reject) => {
       setTimeout(() => {
-        reject(new Error('Sentry Test: Background async promise rejected without catch!'));
+        reject(
+          new Error(
+            'Sentry Test: Background async promise rejected without catch!',
+          ),
+        );
       }, 100);
     });
   };
@@ -34,21 +40,23 @@ export function SentryTest() {
     setApiResult(null);
     try {
       await apiClient.get('/test-intentional-sentry-error');
-    } catch (err: any) {
-      setApiResult(`Error captured: ${err.message || 'API call failed'}`);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'API call failed';
+      setApiResult(`Error captured: ${message}`);
     } finally {
       setApiLoading(false);
     }
   };
 
   return (
-    <div className="rounded-card border-border bg-surface border p-6 space-y-4 shadow-sm">
+    <div className="rounded-card border-border bg-surface space-y-4 border p-6 shadow-sm">
       <div>
-        <h3 className="text-base font-semibold text-foreground flex items-center gap-2">
+        <h3 className="text-foreground flex items-center gap-2 text-base font-semibold">
           <span>🛠️</span> Sentry Frontend Diagnostics
         </h3>
-        <p className="text-sm text-muted-foreground mt-1">
-          Click any button to trigger a real frontend bug and trace it in your Sentry dashboard.
+        <p className="text-muted-foreground mt-1 text-sm">
+          Click any button to trigger a real frontend bug and trace it in your
+          Sentry dashboard.
         </p>
       </div>
 
@@ -56,7 +64,7 @@ export function SentryTest() {
         <button
           type="button"
           onClick={handleUndefinedError}
-          className="rounded-control bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/30 px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer"
+          className="rounded-control cursor-pointer border border-red-500/30 bg-red-500/10 px-3.5 py-2 text-xs font-semibold text-red-500 transition-colors hover:bg-red-500/20"
         >
           💥 1. TypeError (null.profile)
         </button>
@@ -64,7 +72,7 @@ export function SentryTest() {
         <button
           type="button"
           onClick={handleJsonError}
-          className="rounded-control bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 border border-purple-500/30 px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer"
+          className="rounded-control cursor-pointer border border-purple-500/30 bg-purple-500/10 px-3.5 py-2 text-xs font-semibold text-purple-400 transition-colors hover:bg-purple-500/20"
         >
           🧩 2. Bad JSON.parse
         </button>
@@ -72,7 +80,7 @@ export function SentryTest() {
         <button
           type="button"
           onClick={handleUnhandledRejection}
-          className="rounded-control bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3.5 py-2 text-xs font-semibold transition-colors cursor-pointer"
+          className="rounded-control cursor-pointer border border-blue-500/30 bg-blue-500/10 px-3.5 py-2 text-xs font-semibold text-blue-400 transition-colors hover:bg-blue-500/20"
         >
           ⏳ 3. Unhandled Promise
         </button>
@@ -81,15 +89,16 @@ export function SentryTest() {
           type="button"
           onClick={handleApiError}
           disabled={apiLoading}
-          className="rounded-control bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 border border-amber-500/30 px-3.5 py-2 text-xs font-semibold transition-colors disabled:opacity-50 cursor-pointer"
+          className="rounded-control cursor-pointer border border-amber-500/30 bg-amber-500/10 px-3.5 py-2 text-xs font-semibold text-amber-500 transition-colors hover:bg-amber-500/20 disabled:opacity-50"
         >
           {apiLoading ? 'Testing...' : '📡 4. API Error'}
         </button>
       </div>
 
       {apiResult && (
-        <div className="text-xs font-mono text-muted-foreground bg-surface-2 p-2.5 rounded-control border border-border">
-          {apiResult} — <span className="text-emerald-500 font-sans">Sent to Sentry!</span>
+        <div className="text-muted-foreground bg-surface-2 rounded-control border-border border p-2.5 font-mono text-xs">
+          {apiResult} —{' '}
+          <span className="font-sans text-emerald-500">Sent to Sentry!</span>
         </div>
       )}
     </div>
